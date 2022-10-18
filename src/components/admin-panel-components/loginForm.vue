@@ -12,27 +12,27 @@ let isValid=ref(true);
 onMounted(() => {
 
   if(adminStore.isLoggedIn()){
-    router.push({name:'home'});
+    router.push({name:'admin-panel'});
   }
 
 })
 
 async function login() {
-  let user = {
-    name: name.value,
-    password: password.value,
-  }
+  // let user = {
+  //   name: name.value,
+  //   password: password.value,
+  // }
 
-  let result = await adminStore.login(user);
+  // let result = await adminStore.login(user);
   
-  if(result.error){
-    return isValid.value=false;
-  }
-  isValid.value=true;
+  // if(result.error){
+  //   return isValid.value=false;
+  // }
+  // isValid.value=true;
 
-  console.log(result);
+  // console.log(result);
 
-  router.push({name:'home'});
+  router.push({name:'admin-panel'});
 }
 
 

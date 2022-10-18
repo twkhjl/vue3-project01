@@ -17,13 +17,33 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue')
     },
+
+    // admin-panel
+    // =============================================================
+
     {
       path: '/admin/login',
       name: 'login',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/admin-panel/Login.vue')
+    },
+
+    {
+      path: '/admin/',
+      name: 'admin-panel',
+      component: () => import('../views/admin-panel/AdminPanelView.vue'),
+      children:[
+        {
+          path: '',
+          name: 'main',
+          component: () => import('../views/admin-panel/Main.vue')
+        },
+        {
+          path: 'ttt',
+          name: 'ttt',
+          component: () => import('../views/admin-panel/Ttt.vue')
+        },
+        
+      ]
     },
 
   ]
