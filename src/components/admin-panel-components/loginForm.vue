@@ -3,8 +3,10 @@ import router from '@/router';
 import { ref, onMounted, computed, watch } from 'vue'
 
 import { useAdminStore } from '../../stores/admin-panel/admin';
+import { useStorageStore } from '../../stores/admin-panel/storage';
 
 const adminStore = useAdminStore();
+const storageStore = useStorageStore();
 
 let name = ref(null);
 let password = ref(null);
@@ -12,27 +14,28 @@ let isValid=ref(true);
 onMounted(() => {
 
   if(adminStore.isLoggedIn()){
-    router.push({name:'admin-panel'});
+    router.push({name:'main'});
   }
 
 })
 
 async function login() {
-  // let user = {
-  //   name: name.value,
-  //   password: password.value,
-  // }
+  let user = {
+    name: name.value,
+    password: password.value,
+  }
 
-  // let result = await adminStore.login(user);
+  let result = await adminStore.login(user);
   
-  // if(result.error){
-  //   return isValid.value=false;
-  // }
-  // isValid.value=true;
 
-  // console.log(result);
+  if(result.error){
+    return isValid.value=false;
+  }
 
-  router.push({name:'admin-panel'});
+  storageStore.saveAdmin(result);
+  isValid.value=true;
+
+  router.push({name:'main'});
 }
 
 
