@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import router from '@/router';
-import { ref, onMounted, computed, watch } from 'vue'
+import { ref, onBeforeMount, computed, watch } from 'vue'
 
 import { useAdminStore } from '../../stores/admin-panel/admin';
 import { useStorageStore } from '../../stores/admin-panel/storage';
@@ -11,10 +11,16 @@ const storageStore = useStorageStore();
 let name = ref(null);
 let password = ref(null);
 let isValid=ref(true);
-onMounted(() => {
 
-  if(adminStore.isLoggedIn()){
-    router.push({name:'main'});
+function isLoading(){
+  return adminStore.isLoading();
+}
+
+onBeforeMount(async () => {
+  
+  let data = await adminStore.isAdminLoggedIn();
+  if(data && data.status!==401){
+    router.push({name:'admin.main'});
   }
 
 })
@@ -24,18 +30,19 @@ async function login() {
     name: name.value,
     password: password.value,
   }
-
+  adminStore.startLoading();
   let result = await adminStore.login(user);
   
+  adminStore.stopLoading();
 
   if(result.error){
     return isValid.value=false;
   }
 
-  storageStore.saveAdmin(result);
+  adminStore.saveAdmin(result);
   isValid.value=true;
 
-  router.push({name:'main'});
+  router.push({name:'admin.main'});
 }
 
 
@@ -62,15 +69,29 @@ async function login() {
   md:w-[40vw]">
         <div class="text-4xl text-center mt-16 mb-4">後台登入</div>
         <div v-if="!isValid" class="text-xl text-red-400">*帳號或密碼錯誤</div>
-        <input v-model="name" class="outline-none 
+
+        <input v-model="name" 
+@keyup="isValid=true"
+        class="outline-none 
     border-2 border-gray-300 
     w-full h-[40px] rounded-md px-2 mb-4" type="text" placeholder="帳號">
-        <input v-model="password" class="outline-none 
+        <input v-model="password" @keyup="isValid=true"
+        class="outline-none 
     border-2 border-gray-300 
     w-full h-[40px] rounded-md px-2 mb-4" type="password" placeholder="密碼">
+      
+    <template v-if="isLoading()">
+        <span class="outline-none 
+        border-2 border-gray-300 bg-slate-300  text-white text-2xl
+        w-full h-[7vh] rounded-md px-2 mt-10 text-center leading-[7vh]">
+        <i class="animate-spin mr-2 fa-solid fa-arrows-spin"></i>請稍候...</span>
+      </template>
+      <template v-else>
         <button @click.prevent="login()" class="outline-none hover:bg-slate-400
-    border-2 border-gray-300 bg-slate-600  text-white text-2xl
-    w-full h-[7vh] rounded-md px-2 mt-10">登入</button>
+        border-2 border-gray-300 bg-slate-600  text-white text-2xl
+        w-full h-[7vh] rounded-md px-2 mt-10">登入</button>
+      </template>
+
       </form>
 
       <div class="text-center bg-gray-400 rounded-sm mt-4 leading-[10vh] h-[9vh] text-lg">忘記密碼?</div>

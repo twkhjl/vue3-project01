@@ -23,7 +23,7 @@ const router = createRouter({
 
     {
       path: '/admin/login',
-      name: 'admin-login',
+      name: 'admin.login',
       component: () => import('../views/admin-panel/Login.vue')
     },
 
@@ -34,7 +34,7 @@ const router = createRouter({
       children:[
         {
           path: '',
-          name: 'main',
+          name: 'admin.main',
           component: () => import('../views/admin-panel/Main.vue')
         },
         {

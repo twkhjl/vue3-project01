@@ -3,7 +3,12 @@ import { defineStore } from 'pinia'
 
 export const useStorageStore = defineStore('storage', () => {
 
-  const ADMIN_LOCAL_STORAGE = 'admin_auth';
+  const TOKEN_LOCAL_STORAGE = 'admin_token';
+  const ADMIN_LOCAL_STORAGE = 'admin_data';
+
+  function getToken(){
+    return JSON.parse(localStorage.getItem(TOKEN_LOCAL_STORAGE));
+  }
 
   function getAdmin(){
     return JSON.parse(localStorage.getItem(ADMIN_LOCAL_STORAGE));
@@ -11,10 +16,14 @@ export const useStorageStore = defineStore('storage', () => {
 
   function saveAdmin(data:any){
     data=JSON.stringify(data);
-    localStorage.setItem(ADMIN_LOCAL_STORAGE,data);
+    let token = data.token;
+    let admin_data=JSON.stringify(data.user);
+    localStorage.setItem(TOKEN_LOCAL_STORAGE,token);
+    localStorage.setItem(ADMIN_LOCAL_STORAGE,admin_data);
   }
 
   function removeAdmin(){
+    localStorage.removeItem(TOKEN_LOCAL_STORAGE);
     localStorage.removeItem(ADMIN_LOCAL_STORAGE);
   }
 

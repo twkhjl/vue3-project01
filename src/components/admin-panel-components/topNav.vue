@@ -27,13 +27,8 @@ function toggleMenu(menu: string) {
 }
 
 async function logout() {
-  console.log('start');
-  let adminData = storageStore.getAdmin();
-  let token = adminData.token;
-  let result = await adminStore.logout(token);
-  console.log(result);
-  storageStore.removeAdmin();
-  router.push({ name: 'admin-login' });
+  let result = await adminStore.logout();
+  router.push({ name: 'admin.login' });
 }
 
 const route=useRoute();
@@ -53,16 +48,17 @@ watch(() => route.name, () => {
   sticky top-0 h-[10vh] w-full 
   px-4
   bg-gray-400 shadow-md shadow-black
-  flex justify-start items-center">
+  flex justify-start items-center
+  md:left-[10vw] md:w-[90vw]">
     <div @click="toggleSidebar()" class="">
-      <i class="fa-solid fa-bars text-2xl"></i>
+      <i class="fa-solid fa-bars text-2xl md:hidden"></i>
     </div>
     <div class="relative mr-0 mx-auto">
       <span class="mr-2">歡迎,aaa</span>
       <i @click="toggleMenu('user')" class="fa-solid fa-user text-2xl"></i>
       <div :class="[currentMenu=='user' && isMenuHidden==false?'':'hidden']" class="dropdown
       absolute right-1 top-[7vh]
-      min-w-[70vw] sm:min-w-[25vw] w-auto h-auto bg-[#e9e6e8]
+      min-w-[70vw] md:min-w-[25vw] w-auto h-auto bg-[#e9e6e8]
       ">
         <div class="border-b-gray-400 border-2 text-gray-400 text-xl">選單</div>
         <div class="droppdown-item ml-2 my-2 text-lg">
