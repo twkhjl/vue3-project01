@@ -23,7 +23,8 @@ onMounted(() => {})
   <TopNav></TopNav>
   <!-- sidebar -->
   <Sidebar></Sidebar>
-  <div class="main h-[90vh] w-full bg-gray-300">
+  <div class="main h-[90vh] w-full bg-gray-300 
+  md:w-[80vw] md:ml-[20vw]">
     <RouterView></RouterView>
   </div>
 </div>

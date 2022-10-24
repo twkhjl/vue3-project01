@@ -42,6 +42,11 @@ const router = createRouter({
           name: 'ttt',
           component: () => import('../views/admin-panel/Ttt.vue')
         },
+        {
+          path: 'categories',
+          name: 'admin.categories',
+          component: () => import('../views/admin-panel/Categories.vue')
+        },
         
       ]
     },

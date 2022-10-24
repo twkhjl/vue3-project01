@@ -44,6 +44,12 @@ watch(width, (newVal, oldVal) => {
 
 
 const sidebarItemData = [
+{
+    name: '產品分類管理', icon: 'fa-solid fa-folder-tree',
+    children: [
+      { name: '分類列表', icon: 'fa-solid fa-list-ui', link: { name: 'admin.categories' } },
+    ]
+  },
   {
     name: 'item1', icon: 'fa-solid fa-users',
     children: [
@@ -68,8 +74,8 @@ const sidebarItemData = [
 
 
 <template>
-  <div :class="[sidebarStore.isSidebarHidden()?'hidden':'']" @click="sidebarStore.toggleSidebar()"
-    class="fixed h-full w-full bg-black opacity-[0.5] md:hidden"></div>
+    <div :class="[sidebarStore.isSidebarHidden()?'hidden':'']" @click="sidebarStore.toggleSidebar()"
+    class="fixed h-full w-full z-20 bg-black opacity-[0.5] md:hidden"></div>
 
   <div :class="[sidebarStore.isSidebarHidden()?'w-[0vw]':'w-[50vw]']" class="sidebar  overflow-hidden
       fixed left-0 z-30

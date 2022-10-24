@@ -56,8 +56,9 @@ watch(() => route.name, () => {
     <div class="relative mr-0 mx-auto">
       <span class="mr-2">歡迎,aaa</span>
       <i @click="toggleMenu('user')" class="fa-solid fa-user text-2xl"></i>
+      <Teleport to="body">
       <div :class="[currentMenu=='user' && isMenuHidden==false?'':'hidden']" class="dropdown
-      absolute right-1 top-[7vh]
+      absolute right-1 top-[10vh]
       min-w-[70vw] md:min-w-[25vw] w-auto h-auto bg-[#e9e6e8]
       ">
         <div class="border-b-gray-400 border-2 text-gray-400 text-xl">選單</div>
@@ -74,6 +75,7 @@ watch(() => route.name, () => {
           <span class="ml-1">登出</span>
         </div>
       </div>
+    </Teleport>
     </div>
   </div>
 </template>
