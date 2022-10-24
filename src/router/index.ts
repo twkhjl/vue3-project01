@@ -47,6 +47,11 @@ const router = createRouter({
           name: 'admin.categories',
           component: () => import('../views/admin-panel/Categories.vue')
         },
+        {
+          path: 'categories/new',
+          name: 'admin.categories.new',
+          component: () => import('../views/admin-panel/CreateNewCategoryView.vue')
+        },
         
       ]
     },

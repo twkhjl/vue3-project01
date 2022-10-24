@@ -40,7 +40,7 @@ relative">
   <table class="table-auto w-full border-[1px] border-gray-400">
     <thead class="text-2xl text-center font-extrabold border-b-4 border-b-black">
     <th class="w-10">#</th>
-    <th class="border-black border-x-2">名稱</th>
+    <th class="border-black border-x-2">分類名稱</th>
     <th></th>
     </thead>
     <tbody class="text-xl">

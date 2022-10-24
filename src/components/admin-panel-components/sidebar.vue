@@ -48,6 +48,7 @@ const sidebarItemData = [
     name: '產品分類管理', icon: 'fa-solid fa-folder-tree',
     children: [
       { name: '分類列表', icon: 'fa-solid fa-list-ui', link: { name: 'admin.categories' } },
+      { name: '新增分類', icon: 'fa-solid fa-list-ui', link: { name: 'admin.categories.new' } },
     ]
   },
   {
