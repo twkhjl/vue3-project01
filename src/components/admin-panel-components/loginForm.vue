@@ -82,9 +82,9 @@ async function login() {
       
     <template v-if="isLoading()">
         <span class="outline-none 
-        border-2 border-gray-300 bg-slate-300  text-white text-2xl
-        w-full h-[7vh] rounded-md px-2 mt-10 text-center leading-[7vh]">
-        <i class="animate-spin mr-2 fa-solid fa-arrows-spin"></i>請稍候...</span>
+        border-2 border-gray-300 bg-slate-400 text-black text-2xl
+        w-full h-[7vh] rounded-md px-2 mt-10 text-center leading-[7vh] ">
+        <i class="animate-spin mr-2 fa-solid fa-arrows-spin "></i>請稍候...</span>
       </template>
       <template v-else>
         <button @click.prevent="login()" class="outline-none hover:bg-slate-400
