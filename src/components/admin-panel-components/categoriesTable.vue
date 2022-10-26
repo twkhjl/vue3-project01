@@ -5,18 +5,18 @@ import {useAdminStore} from '../../stores/admin-panel/admin';
 import TableRow from './categoriesTableRow.vue';
 
 let data:any=ref(null);
+const adminStore = useAdminStore();
 
+const API_ROOT_URL='https://vue3-project01-api.twkhjl-test.duckdns.org/api/category/';
 
 onMounted(async ()=>{
-  const API_ROOT_URL='https://vue3-project01-api.twkhjl-test.duckdns.org/api/category/';
-  const adminStore = useAdminStore();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 
   ajax.setApiRootUrl(API_ROOT_URL);
   ajax.setTokenToHeader(adminStore.getToken());
 
   let result = await ajax.getData('all');
   data.value =await result.json();
-  console.log(data.value);
 
 })
 

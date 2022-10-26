@@ -1,51 +1,79 @@
 <script setup lang="ts">
 import router from '@/router';
-import { ref, onBeforeMount, computed, watch } from 'vue'
+import { ref, onBeforeMount, computed, watch, onMounted } from 'vue'
+import ajax from '../../helpers/ajax';
 
 import { useAdminStore } from '../../stores/admin-panel/admin';
 
 const adminStore = useAdminStore();
-const input_img: any = ref();
-const div_drop_area:any=ref();
 
-function create() {
+let input_img: any = ref();
+let input_name: any = ref();
+let textarea_description: any = ref();
+let img: any = ref(null);
 
-  console.log('create');
-}
+let errors=ref(null);
+
+
+const div_drop_area: any = ref();
+
+
 
 function previewImg() {
-  const [file] = img.files
-  if (file) {
-    imgPreview.src = URL.createObjectURL(file)
-  }
-}
 
+  const file = input_img.value.files[0];
+  readImg(file);
+
+}
 function dropHandler(e: any) {
+
   e.preventDefault();
-  
+
   input_img.value.value = '';
-  const reader = new FileReader();
 
-  reader.addEventListener("load", () => {
-    imgPreview.src = reader.result;
-  }, false);
-
-  let file = e.dataTransfer.files[0];
-  if (file) {
-    reader.readAsDataURL(file);
-  }
-
-
-
-
+  const file = e.dataTransfer.files[0];
+  readImg(file);
 
 }
-
 function dragoverHandler(e: any) {
   e.preventDefault();
   e.stopPropagation();
   return;
 
+}
+function readImg(file: any) {
+  const reader = new FileReader();
+  reader.addEventListener("load", () => {
+    id_imgPreview.src = reader.result;
+  }, false);
+
+  if (file) {
+    reader.readAsDataURL(file);
+    img.value = file;
+  }
+
+}
+async function create() {
+  errors.value=null;
+  const API_ROOT_URL = 'https://vue3-project01-api.twkhjl-test.duckdns.org/api/category/';
+
+  ajax.setApiRootUrl(API_ROOT_URL);
+  ajax.setTokenToHeader(adminStore.getToken());
+  let data={};
+  
+  if(input_name.value.value) data.name=input_name.value.value;
+  if(textarea_description.value.value) data.description=textarea_description.value.value;
+   
+  if (id_imgPreview.src) {
+    data.img = id_imgPreview.src;
+  }
+
+
+  let result = await ajax.postData('store', data);
+  result = await result.json();
+  if(result.errors){errors.value=result.errors;}
+
+  console.log(result);
 }
 </script>
 
@@ -60,44 +88,40 @@ flex-col items-center justify-center md:w-[80vw] py-10">
       <form class="flex h-auto w-[70vw] flex-col px-6 md:w-[40vw]">
         <div class="mt-2">
           <div class="mb-2 text-xl font-extrabold">分類名稱</div>
-          <div class="mt-2 mb-2 text-red-500">*分類名稱不可空白</div>
-          <input class="text-xl h-[60px] w-full rounded-2xl bg-[#ecf0f3] px-2 
+          <div v-if="errors && errors.name" class="mt-2 mb-2 text-red-500">*{{ (errors && errors.name[0]) || '' }}</div>
+          <input ref="input_name" class="text-xl h-[60px] w-full rounded-2xl bg-[#ecf0f3] px-2 
           shadow-inset1 outline-none
           focus:ring-4 focus:ring-purple-500" name="name" type="text" placeholder="請輸入分類名稱" />
         </div>
         <div class="mt-2">
           <div class="mb-2 text-xl font-extrabold">分類描述</div>
-          <div class="mt-2 mb-2 text-red-500">*分類描述不可空白</div>
-          <textarea class="h-[30vh] w-full resize-none rounded-2xl bg-[#ecf0f3] 
+          <div v-if="errors && errors.description" class="mt-2 mb-2 text-red-500">*{{ (errors && errors.description[0]) || '' }}</div>
+          <textarea ref="textarea_description" class="h-[30vh] w-full resize-none rounded-2xl bg-[#ecf0f3] 
             px-4 py-4 text-xl shadow-inset1 outline-none
             focus:ring-4 focus:ring-purple-500" name="description" cols="50" rows="30"></textarea>
         </div>
         <div class="mt-2">
           <div class="mb-2 text-xl font-extrabold">分類圖片</div>
-          <div class="mt-2 mb-2 text-red-500">*只能上傳圖片檔案</div>
-          <div 
-            class="
+          <div v-if="errors && errors.img" class="mt-2 mb-2 text-red-500">*{{ (errors && errors.img[0]) || '' }}</div>
+          <div class="
             ">
 
-            
 
-            <label ref="div_drop_area" 
-            @drop.prevent="dropHandler" 
-            @dragenter.prevent 
-            @dragover.prevent="dragoverHandler"
-            class='relative flex justify-center items-center h-[30vh]
+
+            <label ref="div_drop_area" @drop.prevent="dropHandler" @dragenter.prevent
+              @dragover.prevent="dragoverHandler" class='relative flex justify-center items-center h-[30vh]
             mb-4 border-[8px] border-[#a2a0a0] border-dashed
             z-0 cursor-pointer'>
-              <input ref="input_img" @change="previewImg()" type="file" class="hidden" name="img" id="img" />
+              <input ref="input_img" @change="previewImg()" type="file" class="hidden" name="img" />
               <span class="absolute mx-auto text-[10vw] text-gray-400 opacity-30">
-              <i class="fa-regular fa-image"></i>
-            </span>
+                <i class="fa-regular fa-image"></i>
+              </span>
               <span class="ml-2 text-2xl">點擊選擇圖片或拖曳圖片至此</span>
             </label>
-            
+
           </div>
-          <div class="mb-2 text-xl font-extrabold">圖片預覽</div>
-          <img class="w-full h-48" id="imgPreview" src="" alt="" />
+          <div v-if="img" class="mb-2 text-xl font-extrabold">圖片預覽</div>
+          <img class="w-full max-h-48" id="id_imgPreview" alt="" />
         </div>
 
         <div class="flex justify-sstart my-4">
@@ -105,7 +129,7 @@ flex-col items-center justify-center md:w-[80vw] py-10">
       rounded-md border-2 border-gray-300 
       bg-green-800 text-2xl text-white outline-none hover:bg-green-400 hover:text-black">建立</button>
 
-          <button @click.prevent="create()" class="h-[7vh] w-[40%] mr-0 mx-auto
+          <button @click.prevent="router.go(-1)" class="h-[7vh] w-[40%] mr-0 mx-auto
       rounded-md border-2 border-gray-300 
       bg-gray-600 text-2xl text-white outline-none hover:bg-slate-400 hover:text-black">取消</button>
         </div>
