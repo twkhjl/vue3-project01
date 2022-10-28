@@ -4,35 +4,50 @@ import { ref, onBeforeMount, computed, watch, onMounted } from 'vue'
 import ajax from '../../helpers/ajax';
 
 import { useAdminStore } from '../../stores/admin-panel/admin';
+import { useCategoryStore } from '../../stores/admin-panel/category';
 
 const adminStore = useAdminStore();
+const categoryStore = useCategoryStore();
+
 
 let input_img: any = ref();
 let input_name: any = ref();
 let textarea_description: any = ref();
 let img: any = ref(null);
 
-let errors=ref(null);
+let errors = ref(null);
 
 
 const div_drop_area: any = ref();
 
 
 
-function previewImg() {
+async function previewImg() {
 
   const file = input_img.value.files[0];
-  readImg(file);
+
+
+  id_imgPreview.src = URL.createObjectURL(file);
+
+  let img_data = await readImgFile(file);
+  img.value = img_data;
+
+
 
 }
-function dropHandler(e: any) {
+async function dropHandler(e: any) {
 
   e.preventDefault();
 
   input_img.value.value = '';
 
   const file = e.dataTransfer.files[0];
-  readImg(file);
+
+  id_imgPreview.src = URL.createObjectURL(file);
+
+  let img_data = await readImgFile(file);
+  img.value = img_data;
+
 
 }
 function dragoverHandler(e: any) {
@@ -41,39 +56,61 @@ function dragoverHandler(e: any) {
   return;
 
 }
-function readImg(file: any) {
-  const reader = new FileReader();
-  reader.addEventListener("load", () => {
-    id_imgPreview.src = reader.result;
-  }, false);
+function readImgFile(file) {
+  return new Promise((resolve, reject) => {
+    let reader = new FileReader();
 
-  if (file) {
+    reader.onload = () => {
+      resolve(reader.result);
+    };
+
+    reader.onerror = reject;
+
     reader.readAsDataURL(file);
-    img.value = file;
-  }
+    // reader.readAsArrayBuffer(file);
 
+  })
 }
-async function create() {
-  errors.value=null;
-  const API_ROOT_URL = 'https://vue3-project01-api.twkhjl-test.duckdns.org/api/category/';
 
-  ajax.setApiRootUrl(API_ROOT_URL);
-  ajax.setTokenToHeader(adminStore.getToken());
-  let data={};
-  
-  if(input_name.value.value) data.name=input_name.value.value;
-  if(textarea_description.value.value) data.description=textarea_description.value.value;
-   
-  if (id_imgPreview.src) {
-    data.img = id_imgPreview.src;
+// function readImg(file: any) {
+//   const reader = new FileReader();
+//   reader.addEventListener("load", () => {
+//     id_imgPreview.src = reader.result;
+//   }, false);
+
+//   if (file) {
+//     reader.readAsDataURL(file);
+
+//     img.value = file;
+//   }
+
+// }
+async function create() {
+  errors.value = null;
+
+  let data = {
+    name: input_name.value.value,
+    description: textarea_description.value.value,
+    img: img.value
+
+  };
+
+
+  let result = await categoryStore.store(data);
+
+  if (result.errors) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    errors.value = result.errors;
   }
 
+  if (result.errors && result.errors.img) {
+    img.value = null;
+    id_imgPreview.removeAttribute('src');
 
-  let result = await ajax.postData('store', data);
-  result = await result.json();
-  if(result.errors){errors.value=result.errors;}
+  }
 
   console.log(result);
+
 }
 </script>
 
@@ -95,7 +132,9 @@ flex-col items-center justify-center md:w-[80vw] py-10">
         </div>
         <div class="mt-2">
           <div class="mb-2 text-xl font-extrabold">分類描述</div>
-          <div v-if="errors && errors.description" class="mt-2 mb-2 text-red-500">*{{ (errors && errors.description[0]) || '' }}</div>
+          <div v-if="errors && errors.description" class="mt-2 mb-2 text-red-500">*{{ (errors && errors.description[0])
+              || ''
+          }}</div>
           <textarea ref="textarea_description" class="h-[30vh] w-full resize-none rounded-2xl bg-[#ecf0f3] 
             px-4 py-4 text-xl shadow-inset1 outline-none
             focus:ring-4 focus:ring-purple-500" name="description" cols="50" rows="30"></textarea>
@@ -124,12 +163,12 @@ flex-col items-center justify-center md:w-[80vw] py-10">
           <img class="w-full max-h-48" id="id_imgPreview" alt="" />
         </div>
 
-        <div class="flex justify-sstart my-4">
+        <div class="flex justify-between my-4">
           <button @click.prevent="create()" class="h-[7vh] w-[40%] 
       rounded-md border-2 border-gray-300 
       bg-green-800 text-2xl text-white outline-none hover:bg-green-400 hover:text-black">建立</button>
 
-          <button @click.prevent="router.go(-1)" class="h-[7vh] w-[40%] mr-0 mx-auto
+          <button @click.prevent="router.go(-1)" class="h-[7vh] w-[40%]
       rounded-md border-2 border-gray-300 
       bg-gray-600 text-2xl text-white outline-none hover:bg-slate-400 hover:text-black">取消</button>
         </div>

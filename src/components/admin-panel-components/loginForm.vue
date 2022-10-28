@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import router from '@/router';
-import { ref, onBeforeMount, computed, watch } from 'vue'
+import { ref, onBeforeMount, computed, watch, onMounted } from 'vue'
 
 import { useAdminStore } from '../../stores/admin-panel/admin';
 import { useStorageStore } from '../../stores/admin-panel/storage';
@@ -16,7 +16,7 @@ function isLoading(){
   return adminStore.isLoading();
 }
 
-onBeforeMount(async () => {
+onMounted(async () => {
   
   let data = await adminStore.isAdminLoggedIn();
   if(data && data.status!==401){
