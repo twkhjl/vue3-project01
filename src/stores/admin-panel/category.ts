@@ -22,27 +22,39 @@ export const useCategoryStore = defineStore('category', () => {
 
   const API_ROOT_URL = 'https://vue3-project01-api.twkhjl-test.duckdns.org/api/category/';
 
-  ajax.setApiRootUrl(API_ROOT_URL);
   // ajax.clearHeader();
   // ajax.setHeader({
   //   'content-Type': 'multipart/form-data'
   // });
-  ajax.setTokenToHeader(adminStore.getToken());
-  
 
-  async function store(data:any){
-    let url = 'store';
-    let result = await ajax.postData(url, data);
+  async function all(){
+    
+    await adminStore.autoRefreshAdminToken();
+
+    let url = 'all';
+    ajax.setTokenToHeader(adminStore.getToken());
+    
+    let result = await ajax.getData(API_ROOT_URL+url);
     result = await result.json();
     return result;
   }
+
+  async function store(data:any){
+    
+    await adminStore.autoRefreshAdminToken();
+    let url = 'store';
+    let result = await ajax.postData(API_ROOT_URL+url, data);
+    result = await result.json();
+    return result;
+  }
+  
   
 
   return {
     start_loading,
     stop_loading,
     is_loading,
-
+    all,
     store,
   }
 

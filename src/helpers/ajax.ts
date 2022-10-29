@@ -2,7 +2,6 @@ let HEADER:any = {
   'content-type': 'application/json',
   'accept': 'application/json',
 };
-let API_ROOT_URL:string;
 
 function getHeader(){
   return HEADER;
@@ -25,14 +24,10 @@ function resetHeader(){
 function setTokenToHeader(token:string){
   HEADER['Authorization'] = `Bearer ${token}`;
 }
-function setApiRootUrl(url:string){
-  url=url.slice(-1) !== '/' ? url+'/' : url;
-  API_ROOT_URL=url;
-}
+
 
 function getData(url: string) {
   if (!url) return { error: 'url required' };
-  url=getUrl(url);
 
   return fetch(url, {
     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -42,12 +37,11 @@ function getData(url: string) {
   })
 };
 
-function postData(url: string, data: object) {
+function postData(url: string, data: object={}) {
 
   if (!url) return { error: 'url required' };
   if (!data) return { error: 'data required' };
 
-  url=getUrl(url);
 
   return fetch(url, {
     body: JSON.stringify(data),
@@ -59,10 +53,7 @@ function postData(url: string, data: object) {
 }
 
 
-function getUrl(url:string){
-  url = url.slice(0, 1) === '/' ? `${API_ROOT_URL}${url.substring(1)}` : `${API_ROOT_URL}${url}`;
-  return url;
-}
+
 
 
 
@@ -72,7 +63,6 @@ const ajax = {
   clearHeader,
   resetHeader,
   setTokenToHeader,
-  setApiRootUrl,
   getData,
   postData,
 }

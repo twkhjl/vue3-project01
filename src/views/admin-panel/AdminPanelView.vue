@@ -13,7 +13,9 @@ const adminStore = useAdminStore();
 const topNavStore = useTopNavStore();
 
 
-onMounted(() => {})
+onMounted(async() => {
+  // let isLoggedIn=await adminStore.isAdminLoggedIn();
+})
 
 
 function hideTopNavMenu(){

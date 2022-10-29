@@ -2,21 +2,23 @@
 import { ref,watch,onMounted } from "vue";
 import ajax from '../../helpers/ajax';
 import {useAdminStore} from '../../stores/admin-panel/admin';
+import {useCategoryStore} from '../../stores/admin-panel/category';
 import TableRow from './categoriesTableRow.vue';
 
 let data:any=ref(null);
 const adminStore = useAdminStore();
+const categoryStore = useCategoryStore();
 
 const API_ROOT_URL='https://vue3-project01-api.twkhjl-test.duckdns.org/api/category/';
 
 onMounted(async ()=>{
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  ajax.setApiRootUrl(API_ROOT_URL);
-  ajax.setTokenToHeader(adminStore.getToken());
+  let result = await categoryStore.all();
 
-  let result = await ajax.getData('all');
-  data.value =await result.json();
+  if(!result.error){
+    data.value = result;
+  }
 
 })
 

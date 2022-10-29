@@ -5,14 +5,13 @@ import { useAdminStore } from '../../stores/admin-panel/admin';
 
 const props = defineProps(['category','idx']);
 
-onMounted(async () => {
-  const API_ROOT_URL = 'https://vue3-project01-api.twkhjl-test.duckdns.org/api/category/';
-  const adminStore = useAdminStore();
+// onMounted(async () => {
+//   const API_ROOT_URL = 'https://vue3-project01-api.twkhjl-test.duckdns.org/api/category/';
+//   const adminStore = useAdminStore();
 
-  ajax.setApiRootUrl(API_ROOT_URL);
-  ajax.setTokenToHeader(adminStore.getToken());
+//   ajax.setTokenToHeader(adminStore.getToken());
 
-})
+// })
 
 </script>
 

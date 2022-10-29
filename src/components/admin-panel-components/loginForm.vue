@@ -11,6 +11,12 @@ const storageStore = useStorageStore();
 let name = ref(null);
 let password = ref(null);
 let isValid=ref(true);
+let err_msg=ref('');
+const err_msg_arr={
+  err:'帳號或密碼錯誤',
+  server:'系統異常,請聯絡管理員處理',
+};
+
 
 function isLoading(){
   return adminStore.isLoading();
@@ -18,10 +24,7 @@ function isLoading(){
 
 onMounted(async () => {
   
-  let data = await adminStore.isAdminLoggedIn();
-  if(data && data.status!==401){
-    router.push({name:'admin.main'});
-  }
+ 
 
 })
 
@@ -31,18 +34,25 @@ async function login() {
     password: password.value,
   }
   adminStore.startLoading();
-  let result = await adminStore.login(user);
+  let url_obj={name:'admin.main'};
+  let result = await adminStore.login(user,{name:'admin.main'});
   
   adminStore.stopLoading();
 
   if(result.error){
+    err_msg.value=err_msg_arr.err;
+    return isValid.value=false;
+  }
+  if(!result.user || !result.token){
+    err_msg.value=err_msg_arr.server;
     return isValid.value=false;
   }
 
-  adminStore.saveAdmin(result);
+  adminStore.saveAdmin(result.user);
+  adminStore.saveToken(result.token);
   isValid.value=true;
 
-  router.push({name:'admin.main'});
+  // router.push({name:'admin.main'});
 }
 
 
@@ -68,7 +78,7 @@ async function login() {
   w-[70vw] h-auto px-6 
   md:w-[40vw]">
         <div class="text-4xl text-center mt-16 mb-4">後台登入</div>
-        <div v-if="!isValid" class="text-xl text-red-400">*帳號或密碼錯誤</div>
+        <div v-if="!isValid" class="text-xl text-red-400">{{ err_msg }}</div>
 
         <input v-model="name" 
 @keyup="isValid=true"

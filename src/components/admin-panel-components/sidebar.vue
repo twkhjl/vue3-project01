@@ -15,14 +15,6 @@ const sidebarStore = useSidebarStore();
 const breakpointStore = useBreakPointStore();
 const adminStore=useAdminStore();
 
-onBeforeMount(async () => {
-
-  let data = await adminStore.isAdminLoggedIn();
-  if(!data || data.status==401){
-    router.push({name:'admin.login'});
-  }
-
-})
 
 onMounted(async () => {
   // let data = await adminStore.isAdminLoggedIn();
