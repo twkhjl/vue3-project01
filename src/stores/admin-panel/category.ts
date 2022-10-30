@@ -20,16 +20,11 @@ export const useCategoryStore = defineStore('category', () => {
 
   const adminStore = useAdminStore();
 
-  const API_ROOT_URL = 'https://vue3-project01-api.twkhjl-test.duckdns.org/api/category/';
-
-  // ajax.clearHeader();
-  // ajax.setHeader({
-  //   'content-Type': 'multipart/form-data'
-  // });
+  const API_ROOT_URL = import.meta.env.VITE_API_ROOT_URL+import.meta.env.VITE_API_CATEGORY_URL;
 
   async function all(){
     
-    await adminStore.autoRefreshAdminToken();
+    await adminStore.validataAdminState();
 
     let url = 'all';
     ajax.setTokenToHeader(adminStore.getToken());
@@ -40,9 +35,12 @@ export const useCategoryStore = defineStore('category', () => {
   }
 
   async function store(data:any){
+
+    await adminStore.validataAdminState();
     
-    await adminStore.autoRefreshAdminToken();
     let url = 'store';
+    ajax.setTokenToHeader(adminStore.getToken());
+
     let result = await ajax.postData(API_ROOT_URL+url, data);
     result = await result.json();
     return result;

@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router';
-import { onMounted, ref } from 'vue';
+import { RouterView } from 'vue-router';
+import { onBeforeMount } from 'vue';
 import { useAdminStore } from '../../stores/admin-panel/admin';
 import { useTopNavStore } from "../../stores/admin-panel/topnav";
-import { useSidebarStore } from "../../stores/admin-panel/sidebar";
-import router from '@/router';
 
 import TopNav from '../../components/admin-panel-components/topNav.vue';
 import Sidebar from '../../components/admin-panel-components/sidebar.vue';
@@ -13,8 +11,9 @@ const adminStore = useAdminStore();
 const topNavStore = useTopNavStore();
 
 
-onMounted(async() => {
-  // let isLoggedIn=await adminStore.isAdminLoggedIn();
+onBeforeMount(async() => {
+  await adminStore.validataAdminState();
+
 })
 
 

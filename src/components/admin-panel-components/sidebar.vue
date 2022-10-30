@@ -17,7 +17,6 @@ const adminStore=useAdminStore();
 
 
 onMounted(async () => {
-  // let data = await adminStore.isAdminLoggedIn();
   if (width.value >= breakpointStore.md) {
     sidebarStore.KeepSidebarWhenClick();
   }

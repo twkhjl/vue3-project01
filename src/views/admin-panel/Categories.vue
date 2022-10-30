@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
-import CategoriesTable from "../../components/admin-panel-components/categoriesTable.vue";
+import { onBeforeMount } from "vue";
 import { useAdminStore } from '../../stores/admin-panel/admin';
+
+import CategoriesTable from "../../components/admin-panel-components/categoriesTable.vue";
 
 const adminStore = useAdminStore();
 
-onMounted(async() => {
+onBeforeMount(async()=>{
+  await adminStore.validataAdminState();
+
 })
 
 </script>

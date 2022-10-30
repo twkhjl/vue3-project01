@@ -9,8 +9,6 @@ let data:any=ref(null);
 const adminStore = useAdminStore();
 const categoryStore = useCategoryStore();
 
-const API_ROOT_URL='https://vue3-project01-api.twkhjl-test.duckdns.org/api/category/';
-
 onMounted(async ()=>{
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
