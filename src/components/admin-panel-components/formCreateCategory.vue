@@ -27,7 +27,7 @@ async function previewImg() {
   const file = input_img.value.files[0];
 
 
-  id_imgPreview.src = URL.createObjectURL(file);
+  id_imgPreview.src = URL.createObjectURL(file) || '';
 
   let img_data = await readImgFile(file);
   img.value = img_data;
@@ -43,7 +43,7 @@ async function dropHandler(e: any) {
 
   const file = e.dataTransfer.files[0];
 
-  id_imgPreview.src = URL.createObjectURL(file);
+  id_imgPreview.src = URL.createObjectURL(file) || '';
 
   let img_data = await readImgFile(file);
   img.value = img_data;
@@ -104,12 +104,13 @@ async function create() {
   }
 
   if (result.errors && result.errors.img) {
-    img.value = null;
-    id_imgPreview.removeAttribute('src');
-
+    // img.value = null;
+    // id_imgPreview.removeAttribute('src');
+    console.log(result);
+    return;
   }
 
-  console.log(result);
+  router.push({name:'admin.categories'});
 
 }
 </script>
