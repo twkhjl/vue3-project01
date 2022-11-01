@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
-import { onBeforeMount } from 'vue';
+import { onBeforeMount,watch,ref } from 'vue';
 import { useAdminStore } from '../../stores/admin-panel/admin';
 import { useTopNavStore } from "../../stores/admin-panel/topnav";
+import GlobalLoader from '../../components/admin-panel-components/global_loader.vue';
 
 import TopNav from '../../components/admin-panel-components/topNav.vue';
 import Sidebar from '../../components/admin-panel-components/sidebar.vue';
+import { useGlobalLoaderStore } from '@/stores/admin-panel/global_loader';
 
 const adminStore = useAdminStore();
 const topNavStore = useTopNavStore();
-
+const global_loader_store=useGlobalLoaderStore();
 
 onBeforeMount(async() => {
   await adminStore.validataAdminState();
@@ -21,24 +23,24 @@ function hideTopNavMenu(){
   topNavStore.hideSubMenu();
 }
 
-
-
 </script>
 
 
 <template>
-<div class="flex flex-col">
-  <!-- topnav -->
-  <TopNav></TopNav>
-  <!-- sidebar -->
-  <Sidebar></Sidebar>
-  <div
-  @click="hideTopNavMenu()"
-  class="main min-h-[120vh] w-full bg-gray-300 
-  md:w-[80vw] md:ml-[20vw]">
-    <RouterView></RouterView>
-  </div>
-</div>
+    <GlobalLoader></GlobalLoader>
+    <div :class="global_loader_store.is_loading()?'hidden':'flex'"
+    class=" flex-col ">
+      <!-- topnav -->
+      <TopNav></TopNav>
+      <!-- sidebar -->
+      <Sidebar></Sidebar>
+      <div
+      @click="hideTopNavMenu()"
+      class="main min-h-[120vh] w-full bg-gray-300 
+      md:w-[80vw] md:ml-[20vw]">
+        <RouterView></RouterView>
+      </div>
+    </div>
 
   
 </template>

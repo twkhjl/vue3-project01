@@ -5,18 +5,26 @@ import {useAdminStore} from '../../stores/admin-panel/admin';
 import {useCategoryStore} from '../../stores/admin-panel/category';
 import TableRow from './categoriesTableRow.vue';
 
+import {useGlobalLoaderStore} from '../../stores/admin-panel/global_loader'
+
 let data:any=ref(null);
 const adminStore = useAdminStore();
 const categoryStore = useCategoryStore();
+const global_loader_store=useGlobalLoaderStore();
 
 onMounted(async ()=>{
   window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  global_loader_store.start_loading();
 
   let result = await categoryStore.all();
 
   if(!result.error){
     data.value = result;
   }
+  
+  global_loader_store.stop_loading();
+
 
 })
 
