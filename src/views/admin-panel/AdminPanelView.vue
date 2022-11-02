@@ -4,6 +4,7 @@ import { onBeforeMount,watch,ref } from 'vue';
 import { useAdminStore } from '../../stores/admin-panel/admin';
 import { useTopNavStore } from "../../stores/admin-panel/topnav";
 import GlobalLoader from '../../components/admin-panel-components/global_loader.vue';
+import GlobalConfirm from '@/components/admin-panel-components/global_confirm.vue';
 
 import TopNav from '../../components/admin-panel-components/topNav.vue';
 import Sidebar from '../../components/admin-panel-components/sidebar.vue';
@@ -27,6 +28,7 @@ function hideTopNavMenu(){
 
 
 <template>
+  <GlobalConfirm></GlobalConfirm>
     <GlobalLoader></GlobalLoader>
     <div :class="global_loader_store.is_loading()?'hidden':'flex'"
     class=" flex-col ">

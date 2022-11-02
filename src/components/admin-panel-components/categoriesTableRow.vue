@@ -2,10 +2,12 @@
 import { ref, watch, onMounted } from "vue";
 import ajax from '../../helpers/ajax';
 import { useAdminStore } from '../../stores/admin-panel/admin';
+import { useGlobalModalStore } from "@/stores/admin-panel/global_modal";
 
 const props = defineProps(['category', 'idx', 'store', 'data']);
 const emits = defineEmits(['onRemoveEvent']);
 
+const global_modal_store = useGlobalModalStore();
 
 // onMounted(async () => {
 //   const API_ROOT_URL = 'https://vue3-project01-api.twkhjl-test.duckdns.org/api/category/';
@@ -21,6 +23,8 @@ const emits = defineEmits(['onRemoveEvent']);
 
 async function removeItem(category_id: number) {
 
+global_modal_store.toggle();
+return;
   await emits('onRemoveEvent', category_id);
   return;
 
