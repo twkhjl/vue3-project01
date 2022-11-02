@@ -3,7 +3,9 @@ import { ref, watch, onMounted } from "vue";
 import ajax from '../../helpers/ajax';
 import { useAdminStore } from '../../stores/admin-panel/admin';
 
-const props = defineProps(['category','idx']);
+const props = defineProps(['category', 'idx', 'store', 'data']);
+const emits = defineEmits(['onRemoveEvent']);
+
 
 // onMounted(async () => {
 //   const API_ROOT_URL = 'https://vue3-project01-api.twkhjl-test.duckdns.org/api/category/';
@@ -12,6 +14,17 @@ const props = defineProps(['category','idx']);
 //   ajax.setTokenToHeader(adminStore.getToken());
 
 // })
+
+
+
+
+
+async function removeItem(category_id: number) {
+
+  await emits('onRemoveEvent', category_id);
+  return;
+
+}
 
 </script>
 
@@ -25,7 +38,7 @@ const props = defineProps(['category','idx']);
           <i class="fa-solid fa-pen-to-square"></i>
           <span class="hidden sm:inline-block">編輯</span>
         </button>
-        <button class="my-2 text-red-700 hover:scale-125 transition-all duration-100">
+        <button @click="removeItem(category.id)" class="my-2 text-red-700 hover:scale-125 transition-all duration-100">
           <i class="fa-solid fa-xmark"></i>
           <span class="hidden sm:inline-block">刪除</span>
         </button>

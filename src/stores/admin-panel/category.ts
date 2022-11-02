@@ -45,6 +45,22 @@ export const useCategoryStore = defineStore('category', () => {
     result = await result.json();
     return result;
   }
+  interface DATA_TO_DESTROY{
+    id:number
+  }
+  async function destroy(data:DATA_TO_DESTROY){
+
+    await adminStore.validataAdminState();
+    
+    let url = 'destroy';
+    ajax.setTokenToHeader(adminStore.getToken());
+
+    let result = await ajax.postData(API_ROOT_URL+url, data);
+    result = await result.json();
+    return result;
+  }
+  
+
   
   
 
@@ -54,6 +70,7 @@ export const useCategoryStore = defineStore('category', () => {
     is_loading,
     all,
     store,
+    destroy,
   }
 
 })

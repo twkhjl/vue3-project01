@@ -28,6 +28,19 @@ onMounted(async ()=>{
 
 })
 
+async function removeItem(category_id:number){
+
+  let result = await categoryStore.destroy({id:category_id});
+
+  if(!result.error){
+    data.value=data.value.filter((o:any)=>o.id!==category_id);
+    return;
+  }
+  return;
+
+
+}
+
 </script>
 
 <template>
@@ -52,10 +65,36 @@ relative">
     <th></th>
     </thead>
     <tbody class="text-xl">
-      <template v-for="(item,idx) in data">
-        <TableRow :category="item" :idx="idx+1"></TableRow>
+
+    
+      <TransitionGroup name="fade">
+      <template v-for="(item,idx) in data" :key="idx">
+        <TableRow :category="item" :idx="idx+1" :store="categoryStore" :data="data" @on-remove-event="removeItem"></TableRow>
       </template>
+    </TransitionGroup>
+
     </tbody>
   </table>
 </div>
 </template>
+
+<style scoped>
+.fade-move,
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+/* 2. declare enter from and leave to state */
+/* .fade-enter-from, */
+.fade-leave-to {
+  opacity: 0;
+  transform: scale(0);
+  transform: translate(0,-100px);
+}
+
+.fade-leave-active {
+}
+
+
+</style>

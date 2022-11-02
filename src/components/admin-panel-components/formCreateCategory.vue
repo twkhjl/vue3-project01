@@ -101,15 +101,18 @@ async function create() {
   if (result.errors) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     errors.value = result.errors;
+    return;
   }
+
+  console.log(result);
 
   if (result.errors && result.errors.img) {
     // img.value = null;
     // id_imgPreview.removeAttribute('src');
-    console.log(result);
+  console.log('err');
+
     return;
   }
-
   router.push({name:'admin.categories'});
 
 }
