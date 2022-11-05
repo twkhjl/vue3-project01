@@ -64,10 +64,16 @@ export const useAdminStore = defineStore('admin', () => {
   //admin data saved in local 
   function getAdmin() {
 
-    if (_remember_me.value) {
-      return JSON.parse(localStorage.getItem(ADMIN_STORAGE_NAME)|| "") ;
+    try{
+      
+      if (_remember_me.value) {
+        return JSON.parse(localStorage.getItem(ADMIN_STORAGE_NAME)|| "") ;
+      }
+      return JSON.parse(sessionStorage.getItem(ADMIN_STORAGE_NAME)|| "") ;
     }
-    return JSON.parse(sessionStorage.getItem(ADMIN_STORAGE_NAME)|| "") ;
+    catch(e){
+      return {};
+    }
 
   }
   function saveAdmin(data: any) {
