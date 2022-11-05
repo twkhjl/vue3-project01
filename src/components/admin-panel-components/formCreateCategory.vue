@@ -122,8 +122,9 @@ async function create() {
 <template>
 
 
-  <div class="mx-auto flex h-auto w-full 
-flex-col items-center justify-center md:w-[80vw] py-10">
+  <div class="flex flex-col items-center justify-center 
+  h-auto w-full 
+  md:w-[80vw] py-10">
     <div class="mt-4 mb-4 text-center text-4xl">創建分類</div>
     <div class="rounded-md border-t-[1px] bg-[#ecf0f3] shadow-lg shadow-[#474444]">
       <form class="flex h-auto w-[70vw] flex-col px-6 md:w-[40vw]">

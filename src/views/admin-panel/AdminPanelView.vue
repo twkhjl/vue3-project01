@@ -4,7 +4,7 @@ import { onBeforeMount,watch,ref } from 'vue';
 import { useAdminStore } from '../../stores/admin-panel/admin';
 import { useTopNavStore } from "../../stores/admin-panel/topnav";
 import GlobalLoader from '../../components/admin-panel-components/global_loader.vue';
-import GlobalConfirm from '@/components/admin-panel-components/global_confirm.vue';
+import GlobalModal from '@/components/admin-panel-components/global_modal.vue';
 
 import TopNav from '../../components/admin-panel-components/topNav.vue';
 import Sidebar from '../../components/admin-panel-components/sidebar.vue';
@@ -28,18 +28,18 @@ function hideTopNavMenu(){
 
 
 <template>
-  <GlobalConfirm></GlobalConfirm>
+  <GlobalModal></GlobalModal>
     <GlobalLoader></GlobalLoader>
     <div :class="global_loader_store.is_loading()?'hidden':'flex'"
-    class=" flex-col ">
+    class="flex-col">
       <!-- topnav -->
       <TopNav></TopNav>
       <!-- sidebar -->
       <Sidebar></Sidebar>
       <div
       @click="hideTopNavMenu()"
-      class="main min-h-[120vh] w-full bg-gray-300 
-      md:w-[80vw] md:ml-[20vw]">
+      class="main min-h-[90vh] w-full bg-gray-300 
+      md:ml-[20vw] md:w-[80vw]">
         <RouterView></RouterView>
       </div>
     </div>

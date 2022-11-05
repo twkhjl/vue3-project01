@@ -79,9 +79,9 @@ watch(() => route.name, () => {
   <div class="top-nav 
   sticky top-0 h-[10vh] w-full z-10
   px-4
-  bg-gray-400 shadow-md shadow-black
+  bg-gray-400 shadow-md shadow-black 
   flex justify-start items-center
-  md:left-[10vw] md:w-[90vw]">
+  md:ml-[20vw] md:w-[80vw] md:mx-auto">
     <div @click="toggleSidebar()" class="">
       <i class="fa-solid fa-bars text-2xl md:hidden"></i>
     </div>

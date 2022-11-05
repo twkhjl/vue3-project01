@@ -4,27 +4,25 @@ import ajax from '../../helpers/ajax';
 import { useAdminStore } from '../../stores/admin-panel/admin';
 import { useGlobalModalStore } from "@/stores/admin-panel/global_modal";
 
+
 const props = defineProps(['category', 'idx', 'store', 'data']);
 const emits = defineEmits(['onRemoveEvent']);
 
 const global_modal_store = useGlobalModalStore();
 
-// onMounted(async () => {
-//   const API_ROOT_URL = 'https://vue3-project01-api.twkhjl-test.duckdns.org/api/category/';
-//   const adminStore = useAdminStore();
+function showRmoveItemConfirm(category_id: number){
 
-//   ajax.setTokenToHeader(adminStore.getToken());
-
-// })
-
-
-
-
+  global_modal_store.use_confirm();
+  global_modal_store.set_content('是否確認刪除此筆資料?');
+  global_modal_store.set_confirm_btn_text('沒錯!');
+  global_modal_store.set_cancel_btn_text('我再想想..');
+  global_modal_store.set_confirm_callback_fn(removeItem,category_id);
+  global_modal_store.set_confirm_callback_type_async();
+  global_modal_store.toggle();
+}
 
 async function removeItem(category_id: number) {
 
-global_modal_store.toggle();
-return;
   await emits('onRemoveEvent', category_id);
   return;
 
@@ -42,7 +40,7 @@ return;
           <i class="fa-solid fa-pen-to-square"></i>
           <span class="hidden sm:inline-block">編輯</span>
         </button>
-        <button @click="removeItem(category.id)" class="my-2 text-red-700 hover:scale-125 transition-all duration-100">
+        <button @click="showRmoveItemConfirm(category.id)" class="my-2 text-red-700 hover:scale-125 transition-all duration-100">
           <i class="fa-solid fa-xmark"></i>
           <span class="hidden sm:inline-block">刪除</span>
         </button>

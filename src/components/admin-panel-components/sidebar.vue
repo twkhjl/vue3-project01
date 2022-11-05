@@ -42,6 +42,7 @@ const sidebarItemData = [
       { name: '新增分類', icon: 'fa-solid fa-list-ui', link: { name: 'admin.categories.new' } },
     ]
   },
+  {name: 'ttt', icon: 'fa-solid fa-users', link: { name: 'ttt' }},
   {
     name: 'item1', icon: 'fa-solid fa-users',
     children: [

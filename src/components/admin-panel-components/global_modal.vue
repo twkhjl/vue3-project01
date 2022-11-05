@@ -1,59 +1,99 @@
 <script lang="ts" setup>
+import { ref, TransitionGroup } from 'vue';
 import { useGlobalModalStore } from '../../stores/admin-panel/global_modal';
+import ConfirmVue from './modals/confirm.vue';
+import ModalVue from './modals/modal.vue';
+import AlertVue from './modals/alert.vue';
 
 const global_modal_store = useGlobalModalStore();
 
-function hideModal(){
+
+
+function hideModal() {
   global_modal_store.hide();
 }
+
+const modals = {
+  ConfirmVue,
+  ModalVue,
+  AlertVue,
+}
+
+const default_overlay_bg_css=ref('bg-gray-800 opacity-70');
+const overlay_disabled_bg_css=ref('opacity-0');
+
+const default_overlay_active_css=ref('transition-all-2 duration-200');
+const default_overlay_enter_css=ref('opacity-0');
+const default_overlay_leave_css=ref('opacity-0');
+
+const default_modal_active_css=ref('transition-all-2 duration-200');
+const default_modal_enter_css=ref('opacity-0 transform translate-y-[-100px]');
+const default_modal_leave_css=ref('opacity-0 transform translate-y-[-100px]');
+
+function get_overlay_bg_css(){
+  if(!global_modal_store.is_overlay_enabled()) return overlay_disabled_bg_css.value;
+  return default_overlay_bg_css.value;
+}
+
 
 </script>
 
 <template>
-  <Transition>
-  <div v-if="global_modal_store.is_show()"
-  class="z-[100] fixed top-0 left-0 w-screen h-screen flex justify-center border-2 border-black">
-  <div class="relative mt-9 h-[50vh] w-[50vw] rounded-t-xl rounded-b-lg bg-gray-400 shadow-lg shadow-black">
-    
-    <div @click="hideModal()"
-    class="absolute right-2 top-2 mx-auto mr-0 h-[2.5rem] w-[2.5rem] 
-    rounded-full text-center text-2xl pt-1 bg-gray-400
-    text-gray-700 hover:bg-gray-500 hover:text-white  shadow-md shadow-black cursor-pointer">
-    <i class="fa-solid fa-xmark"></i>
-    </div>
+  <Teleport to="body">
+    <Transition
+    :enter-active-class="default_modal_active_css"
+    :leave-active-class="default_modal_active_css"
+    enter-from-class="opacity-0 transform translate-y-[-100px]"
+    leave-to-class="opacity-0 transform translate-y-[-100px]"
+    >
+          <div  v-if="global_modal_store.is_show()"  
+          class="
+          z-[100] fixed top-[5vh] left-[30vw] mr-auto w-[40vw] h-auto flex flex-col justify-center">
+            <component :is="global_modal_store.get_current_modal()"></component>
+          </div>
+    </Transition>
 
-    <div class="h-[10vh] w-full rounded-t-lg bg-gray-700 text-white">
-      <div class="h-full pl-4 text-2xl font-extrabold leading-[10vh]">header</div>
-    </div>
-    <div class="p-2">content</div>
 
-  </div>
-</div>
-</Transition>
+    <Transition
+    enter-active-class="transition-all-2 duration-200"
+    leave-active-class="transition-all duration-200"
+    enter-from-class="opacity-0"
+    leave-to-class="opacity-0"
+    >
+          <div v-if="global_modal_store.is_show()"
+           @click="global_modal_store.hide()" :class="get_overlay_bg_css()"
+    class="fixed top-0 left-0 z-[50] h-screen w-screen"></div>
+  </Transition>
 
-<div  v-if="global_modal_store.is_show()"
-class="fixed top-0 left-0 z-[80] h-screen w-screen bg-black opacity-70"></div>
+  </Teleport>
+
 </template>
 
 
 
 <style scoped>
-.fade-move,
+
+/* .fade-move,
 .fade-enter-active,
-.fade-leave-active {
+.fade-leave-active,
+.overlay-move,
+.overlay-enter-active,
+.overlay-leave-active
+{
   transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
 }
 
-/* 2. declare enter from and leave to state */
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
-  transform: translate(0,-100px);
+  transform: translate(0, -100px);
 }
+.overlay-enter-from,
+.overlay-leave-to {
+  opacity: 0;
+} */
 
-.fade-leave-active {
-}
 
-
+/* .fade-leave-active {} */
 </style>
 
