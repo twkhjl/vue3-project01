@@ -15,7 +15,7 @@ let input_name: any = ref();
 let textarea_description: any = ref();
 let img: any = ref(null);
 
-let errors = ref(null);
+let errors:any = ref(null);
 
 
 const div_drop_area: any = ref();
@@ -26,8 +26,10 @@ async function previewImg() {
 
   const file = input_img.value.files[0];
 
+  const imgPreview:any = document.querySelector('#id_imgPreview');
 
-  id_imgPreview.src = URL.createObjectURL(file) || '';
+  imgPreview.src = URL.createObjectURL(file) || '';
+  // id_imgPreview.src = URL.createObjectURL(file) || '';
 
   let img_data = await readImgFile(file);
   img.value = img_data;
@@ -43,7 +45,8 @@ async function dropHandler(e: any) {
 
   const file = e.dataTransfer.files[0];
 
-  id_imgPreview.src = URL.createObjectURL(file) || '';
+  const imgPreview:any = document.querySelector('#id_imgPreview');
+  imgPreview.src = URL.createObjectURL(file) || '';
 
   let img_data = await readImgFile(file);
   img.value = img_data;
@@ -56,7 +59,7 @@ function dragoverHandler(e: any) {
   return;
 
 }
-function readImgFile(file) {
+function readImgFile(file:any) {
   return new Promise((resolve, reject) => {
     let reader = new FileReader();
 
@@ -96,7 +99,7 @@ async function create() {
   };
 
 
-  let result = await categoryStore.store(data);
+  let result:any = await categoryStore.store(data);
 
   if (result.errors) {
     window.scrollTo({ top: 0, behavior: 'smooth' });

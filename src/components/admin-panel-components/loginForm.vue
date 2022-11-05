@@ -37,7 +37,7 @@ async function login() {
   }
   adminStore.startLoading();
   let url_obj={name:'admin.main'};
-  let result = await adminStore.login(user,{name:'admin.main'});
+  let result:any = await adminStore.login(user,{name:'admin.main'});
   
   adminStore.stopLoading();
 
@@ -52,7 +52,6 @@ async function login() {
 
   adminStore.saveAdmin(result.user);
   adminStore.saveToken(result.token);
-  adminStore.setas
   isValid.value=true;
 
 }

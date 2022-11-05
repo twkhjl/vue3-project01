@@ -5,13 +5,7 @@ import { useAdminStore } from '../stores/admin-panel/admin';
 import router from '@/router';
 const adminStore = useAdminStore();
 
-onMounted(() => {
-
-if(!adminStore.isLoggedIn()){
-  router.push({name:'login'});
-}
-
-})
+onMounted(() => {})
 
 </script>
 
@@ -21,9 +15,6 @@ if(!adminStore.isLoggedIn()){
     <div class="text-2xl mb-4">
       Home View
     </div>
-    <RouterLink to='/admin/login'
-    class="border-2 border-black px-4 py-2 rounded-md"
-    >login</RouterLink>
   </div>
   
 </template>

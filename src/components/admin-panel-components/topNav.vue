@@ -23,7 +23,7 @@ function toggleSidebar() {
   return sidebarStore.toggleSidebar();
 }
 
-let currentMenu = ref(null);
+let currentMenu = ref();
 
 let isMenuHidden = ref(true);
 

@@ -29,7 +29,7 @@ export const useCategoryStore = defineStore('category', () => {
     let url = 'all';
     ajax.setTokenToHeader(adminStore.getToken());
     
-    let result = await ajax.getData(API_ROOT_URL+url);
+    let result:any = await ajax.getData(API_ROOT_URL+url);
     result = await result.json();
     return result;
   }
@@ -41,7 +41,7 @@ export const useCategoryStore = defineStore('category', () => {
     let url = 'store';
     ajax.setTokenToHeader(adminStore.getToken());
 
-    let result = await ajax.postData(API_ROOT_URL+url, data);
+    let result:any = await ajax.postData(API_ROOT_URL+url, data);
     result = await result.json();
     return result;
   }
@@ -55,7 +55,7 @@ export const useCategoryStore = defineStore('category', () => {
     let url = 'destroy';
     ajax.setTokenToHeader(adminStore.getToken());
 
-    let result = await ajax.postData(API_ROOT_URL+url, data);
+    let result:any = await ajax.postData(API_ROOT_URL+url, data);
     result = await result.json();
     return result;
   }

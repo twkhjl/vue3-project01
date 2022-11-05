@@ -65,9 +65,9 @@ export const useAdminStore = defineStore('admin', () => {
   function getAdmin() {
 
     if (_remember_me.value) {
-      return JSON.parse(localStorage.getItem(ADMIN_STORAGE_NAME)) || "";
+      return JSON.parse(localStorage.getItem(ADMIN_STORAGE_NAME)|| "") ;
     }
-    return JSON.parse(sessionStorage.getItem(ADMIN_STORAGE_NAME)) || "";
+    return JSON.parse(sessionStorage.getItem(ADMIN_STORAGE_NAME)|| "") ;
 
   }
   function saveAdmin(data: any) {
@@ -148,7 +148,7 @@ export const useAdminStore = defineStore('admin', () => {
     }
     
     ajax.setTokenToHeader(token);
-    let result = await ajax.postData(API_ME_URL);
+    let result:any = await ajax.postData(API_ME_URL);
     result = await result.json();
     
     //redirect logged in user in login page to main page
@@ -173,7 +173,7 @@ export const useAdminStore = defineStore('admin', () => {
       }
 
       // refresh token
-      let result = await refreshToken();
+      let result:any = await refreshToken();
       result = await result.json();
 
       if (result.error || !result.access_token) {
@@ -195,11 +195,11 @@ export const useAdminStore = defineStore('admin', () => {
     router.push(login_url);
   }
 
-  async function login(user: any, url_obj?: object) {
+  async function login(user: any, url_obj?: any) {
 
 
     let url = 'login';
-    let data = await ajax.postData(API_ROOT_URL + url, user);
+    let data:any = await ajax.postData(API_ROOT_URL + url, user);
     data = await data.json();
     
     if (data.error || !data.user || !data.token) {
@@ -231,7 +231,7 @@ export const useAdminStore = defineStore('admin', () => {
     ajax.setTokenToHeader(token);
     let url = 'logout';
 
-    let data = await ajax.postData(API_ROOT_URL + url);
+    let data:any = await ajax.postData(API_ROOT_URL + url);
     data = await data.json();
     if (!data.error) {
       removeAdmin();

@@ -5,28 +5,26 @@ import { useAdminStore } from '../../stores/admin-panel/admin';
 import { useCategoryStore } from '../../stores/admin-panel/category';
 import TableRow from './categoriesTableRow.vue';
 import { useGlobalModalStore } from "@/stores/admin-panel/global_modal";
-import { useGlobalLoaderStore } from '../../stores/admin-panel/global_loader';
 import { useGlobalLoadingState } from '../../stores/admin-panel/global_loading_state';
 
 let data: any = ref(null);
 const adminStore = useAdminStore();
 const categoryStore = useCategoryStore();
-const global_loader_store = useGlobalLoaderStore();
 const global_modal_store = useGlobalModalStore();
 const global_loading_state=useGlobalLoadingState();
 
 onMounted(async () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  global_loader_store.start_loading();
+  global_loading_state.start_loading();
 
-  let result = await categoryStore.all();
+  let result:any = await categoryStore.all();
 
   if (!result.error) {
     data.value = result;
   }
 
-  global_loader_store.stop_loading();
+  global_loading_state.stop_loading();
 
 
 })
@@ -34,7 +32,7 @@ onMounted(async () => {
 async function removeItem(category_id: number) {
 
   global_loading_state.start_loading();
-  let result = await categoryStore.destroy({ id: category_id });
+  let result:any = await categoryStore.destroy({ id: category_id });
 
   if (!result.error) {
     data.value = data.value.filter((o: any) => o.id !== category_id);
