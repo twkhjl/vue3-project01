@@ -1,1 +1,0 @@
-import{_ as e}from"./_plugin-vue_export-helper.cdc0426e.js";import{o as t,c as o}from"./index.30555711.js";const c={},r={class:"fixed right-0 top-[50vh] text-4xl"};function n(s,a){return t(),o("div",r," main page ")}const f=e(c,[["render",n]]);export{f as default};
