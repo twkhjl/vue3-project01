@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router';
 import { onMounted, ref } from 'vue';
-import { useAdminStore } from '../stores/admin-panel/admin';
+import { useAdminStore } from '../stores/admin-panel/admin.js';
 import router from '@/router';
 const adminStore = useAdminStore();
 

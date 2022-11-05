@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, onBeforeMount, onMounted, watch } from 'vue';
-import {useSidebarStore} from '../../stores/admin-panel/sidebar';
+import {useSidebarStore} from '../../stores/admin-panel/sidebar.js';
 import router from '@/router';
 
 const props = defineProps(['itemData',]);

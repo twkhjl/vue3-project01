@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onBeforeMount } from "vue";
-import { useAdminStore } from '../../stores/admin-panel/admin';
+import { useAdminStore } from '../../stores/admin-panel/admin.js';
 import AdminLoginForm from '../../components/admin-panel-components/loginForm.vue'
 
 import router from "@/router";

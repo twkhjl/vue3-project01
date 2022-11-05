@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted,ref } from 'vue';
-import { useGlobalModalStore } from '@/stores/admin-panel/global_modal';
+import { useGlobalModalStore } from '@/stores/admin-panel/global_modal.js';
 
 const global_modal_store = useGlobalModalStore();
 

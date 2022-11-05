@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
 import { onBeforeMount,watch,ref } from 'vue';
-import { useAdminStore } from '../../stores/admin-panel/admin';
-import { useTopNavStore } from "../../stores/admin-panel/topnav";
+import { useAdminStore } from '../../stores/admin-panel/admin.js';
+import { useTopNavStore } from "../../stores/admin-panel/topnav.js";
 import GlobalLoader from '../../components/admin-panel-components/global_loader.vue';
 import GlobalModal from '@/components/admin-panel-components/global_modal.vue';
 
 import TopNav from '../../components/admin-panel-components/topNav.vue';
 import Sidebar from '../../components/admin-panel-components/sidebar.vue';
-import { useGlobalLoaderStore } from '@/stores/admin-panel/global_loader';
+import { useGlobalLoaderStore } from '@/stores/admin-panel/global_loader.js';
 
 const adminStore = useAdminStore();
 const topNavStore = useTopNavStore();

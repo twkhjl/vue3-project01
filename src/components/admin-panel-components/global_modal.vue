@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, TransitionGroup } from 'vue';
-import { useGlobalModalStore } from '../../stores/admin-panel/global_modal';
+import { useGlobalModalStore } from '../../stores/admin-panel/global_modal.js';
 import ConfirmVue from './modals/confirm.vue';
 import ModalVue from './modals/modal.vue';
 import AlertVue from './modals/alert.vue';

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref, watch, onMounted } from "vue";
 import ajax from '../../helpers/ajax';
-import { useAdminStore } from '../../stores/admin-panel/admin';
-import { useCategoryStore } from '../../stores/admin-panel/category';
+import { useAdminStore } from '../../stores/admin-panel/admin.js';
+import { useCategoryStore } from '../../stores/admin-panel/category.js';
 import TableRow from './categoriesTableRow.vue';
-import { useGlobalModalStore } from "@/stores/admin-panel/global_modal";
-import { useGlobalLoadingState } from '../../stores/admin-panel/global_loading_state';
+import { useGlobalModalStore } from "@/stores/admin-panel/global_modal.js";
+import { useGlobalLoadingState } from '../../stores/admin-panel/global_loading_state.js';
 
 let data: any = ref(null);
 const adminStore = useAdminStore();

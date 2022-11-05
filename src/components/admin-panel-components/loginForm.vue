@@ -2,7 +2,7 @@
 import router from '@/router';
 import { ref, computed, watch,onMounted } from 'vue'
 
-import { useAdminStore } from '../../stores/admin-panel/admin';
+import { useAdminStore } from '../../stores/admin-panel/admin.js';
 
 const adminStore = useAdminStore();
 

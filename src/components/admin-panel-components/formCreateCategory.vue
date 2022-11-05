@@ -3,8 +3,8 @@ import router from '@/router';
 import { ref, onBeforeMount, computed, watch, onMounted } from 'vue'
 import ajax from '../../helpers/ajax';
 
-import { useAdminStore } from '../../stores/admin-panel/admin';
-import { useCategoryStore } from '../../stores/admin-panel/category';
+import { useAdminStore } from '../../stores/admin-panel/admin.js';
+import { useCategoryStore } from '../../stores/admin-panel/category.js';
 
 const adminStore = useAdminStore();
 const categoryStore = useCategoryStore();

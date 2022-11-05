@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 
-import { useGlobalModalStore } from '@/stores/admin-panel/global_modal';
-import { useGlobalLoadingState } from '@/stores/admin-panel/global_loading_state';
+import { useGlobalModalStore } from '@/stores/admin-panel/global_modal.js';
+import { useGlobalLoadingState } from '@/stores/admin-panel/global_loading_state.js';
 
 const global_modal_store=useGlobalModalStore();
 const global_loading_state=useGlobalLoadingState();

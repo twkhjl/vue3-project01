@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, onMounted } from "vue";
 import ajax from '../../helpers/ajax';
-import { useAdminStore } from '../../stores/admin-panel/admin';
-import { useGlobalModalStore } from "@/stores/admin-panel/global_modal";
+import { useGlobalModalStore } from "@/stores/admin-panel/global_modal.js";
 
 
 const props = defineProps(['category', 'idx', 'store', 'data']);

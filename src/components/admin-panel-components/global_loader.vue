@@ -1,7 +1,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useGlobalLoadingState } from '../../stores/admin-panel/global_loading_state';
+import { useGlobalLoadingState } from '../../stores/admin-panel/global_loading_state.js';
 
 const global_loading_state = useGlobalLoadingState();
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import { useSidebarStore } from '../../stores/admin-panel/sidebar';
-import { useAdminStore } from '../../stores/admin-panel/admin';
-import { useTopNavStore } from "../../stores/admin-panel/topnav";
+import { useSidebarStore } from '../../stores/admin-panel/sidebar.js';
+import { useAdminStore } from '../../stores/admin-panel/admin.js';
+import { useTopNavStore } from "../../stores/admin-panel/topnav.js";
 
 import router from "@/router";
 import { useRoute } from 'vue-router';

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { watch, ref, onMounted, onBeforeMount } from 'vue';
-import { useSidebarStore } from '../../stores/admin-panel/sidebar';
-import { useAdminStore } from '../../stores/admin-panel/admin';
-import { useBreakPointStore } from '../../stores/common/breakpoint';
+import { useSidebarStore } from '../../stores/admin-panel/sidebar.js';
+import { useAdminStore } from '../../stores/admin-panel/admin.js';
+import { useBreakPointStore } from '../../stores/common/breakpoint.js';
 
 import SidebarItem from './sidebarItem.vue';
 import { useWindowSize } from '@vueuse/core'
