@@ -24,8 +24,10 @@ async function removeItem(category_id: number) {
 }
 
 function showEditModal(category_id: number) {
-    const id = category_id
-    console.log(id)
+
+    const props = {id:category_id}
+
+    global_modal_store.set_props(props)
 
     global_modal_store.use_custom_component(formEditCategoryVue)
     global_modal_store.toggle()

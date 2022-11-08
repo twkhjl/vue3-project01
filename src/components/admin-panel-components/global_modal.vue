@@ -48,7 +48,7 @@ function get_overlay_bg_css() {
                 class="z-[100] fixed top-[5vh] left-[30vw] mr-auto w-[40vw] h-auto flex flex-col justify-center"
             >
                 <component
-                    :is="global_modal_store.get_current_modal()"
+                    :is="global_modal_store.get_current_modal()" v-bind="global_modal_store.get_props()"
                 ></component>
             </div>
         </Transition>

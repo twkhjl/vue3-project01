@@ -20,7 +20,12 @@ const div_drop_area: any = ref()
 
 // const isDragEnter: any = ref(false)
 
-onMounted(() => {})
+const props = defineProps(['id'])
+
+onMounted(() => {
+  console.log('id:')
+    console.log(props.id)
+})
 
 async function previewImg() {
     const file = input_img.value.files[0]

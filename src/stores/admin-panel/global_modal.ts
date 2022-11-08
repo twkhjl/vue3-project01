@@ -29,6 +29,15 @@ export const useGlobalModalStore = defineStore('global_modal', () => {
         AlertVue,
     }
 
+    const _props =ref()
+
+    function set_props(props:any){
+      _props.value=props
+    }
+    function get_props(){
+      return _props.value
+    }
+
     function use_alert() {
         _current_modal = modalArr.AlertVue
     }
@@ -184,5 +193,8 @@ export const useGlobalModalStore = defineStore('global_modal', () => {
         is_loading,
         start_loading,
         stop_loading,
+
+        get_props,
+        set_props,
     }
 })
