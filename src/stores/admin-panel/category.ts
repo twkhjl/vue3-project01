@@ -8,7 +8,7 @@ export const useCategoryStore = defineStore('category', () => {
   
   const API_ROOT_URL = import.meta.env.VITE_API_ROOT_URL+import.meta.env.VITE_API_CATEGORY_URL;
   
-  const storage = useStorageStore();
+  const storage:any = useStorageStore();
   const fetchData = useFetchData();
 
 

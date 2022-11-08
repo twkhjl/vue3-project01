@@ -38,33 +38,6 @@ async function previewImg() {
 
 
 }
-async function dropHandler(e: any) {
-
-  e.preventDefault();
-  isDragEnter.value=false;
-  input_img.value.value = '';
-
-  const file = e.dataTransfer.files[0];
-
-  const imgPreview:any = document.querySelector('#id_imgPreview');
-  imgPreview.src = URL.createObjectURL(file) || '';
-
-  let img_data = await readImgFile(file);
-  img.value = img_data;
-
-
-}
-function dragEnterHandler(e: any) {
-  e.preventDefault();
-  e.stopPropagation();
-  return;
-}
-function dragOverHandler(e: any){
-  e.preventDefault();
-  e.stopPropagation();
-  return;
-
-}
 function readImgFile(file:any) {
   return new Promise((resolve, reject) => {
     let reader = new FileReader();
@@ -115,7 +88,7 @@ async function create() {
   <div class="flex flex-col items-center justify-center 
   h-auto w-full 
   md:w-[80vw] py-10">
-    <div class="mt-4 mb-4 text-center text-4xl">創建分類</div>
+    <div class="mt-4 mb-4 text-center text-4xl">編輯分類</div>
     <div v-if="serverError" class="mt-2 mb-2 text-red-500">*系統異常,請聯絡管理員</div>
 
     <div class="rounded-md border-t-[1px] bg-[#ecf0f3] shadow-lg shadow-[#474444]">

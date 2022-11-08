@@ -5,8 +5,6 @@ import { ref } from 'vue'
 import { useAuthStore } from '@/stores/admin-panel/auth/admin_auth';
 import { useStorageStore } from '@/stores/admin-panel/auth/admin_storage';
 
-const auth = useAuthStore();
-const storage = useStorageStore();
 
 const name = ref(null);
 const password = ref(null);
@@ -14,17 +12,18 @@ const rememberMe = ref(false);
 const isValid = ref(true);
 const errMsg = ref('');
 
-const isLoading = ref(false);
+const auth = useAuthStore();
+const storage = useStorageStore();
 
+const isLoading = ref(false);
 
 const err_msg_arr = {
   err: '帳號或密碼錯誤',
   server: '系統異常,請聯絡管理員處理',
 };
 
+
 async function login() {
-  console.log('rememberMe:');
-  console.log(rememberMe.value);
 
   let user = {
     name: name.value,
@@ -47,6 +46,7 @@ async function login() {
 
   storage.saveAdmin(result.user,rememberMe.value);
   storage.saveToken(result.token,rememberMe.value);
+  auth.setAsLoggedIn();
   isValid.value = true;
 
   // window.location.assign('/admin/');

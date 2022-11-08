@@ -9,11 +9,10 @@ export const useAuthStore = defineStore('admin_auth', () => {
   const API_REFRESH_URL = API_ROOT_URL + import.meta.env.VITE_API_ADMIN_REFRESH_URL;
   const API_ME_URL = API_ROOT_URL + import.meta.env.VITE_API_ADMIN_ME_URL;
 
-  const TOKEN_STORAGE_NAME = import.meta.env.VITE_TOKEN_STORAGE_NAME;
-  const ADMIN_STORAGE_NAME = import.meta.env.VITE_ADMIN_STORAGE_NAME;
-
   const storage = useStorageStore();
   const fetchData = useFetchData();
+
+  const _isAdminLoggedIn=ref(false);
 
   const isTokenAutoRefresh = ref(false);
   const isTokenExpired = ref(false);
@@ -26,7 +25,10 @@ export const useAuthStore = defineStore('admin_auth', () => {
     let result: any;
 
 
-    if (!token || !admin) return false;
+    if (!token || !admin) {
+      setAsNotLoggedIn();
+      return false;
+    }
 
     fetchData.setTokenToHeader(token);
     result = await fetchData.postData(API_ME_URL);
@@ -37,24 +39,40 @@ export const useAuthStore = defineStore('admin_auth', () => {
 
       if (result.error !== 'expire') {
         console.log('token expired');
+        setAsNotLoggedIn();
         return false;
       }
-      if (!isTokenAutoRefresh.value) return false;
+      if (!isTokenAutoRefresh.value){ 
+        setAsNotLoggedIn();
+        return false;
+      }
 
       try {
         let expiredToken = token;
         let result: any = refreshToken(expiredToken);
-        if (result.error) return false;
+        if (result.error) {
+          setAsNotLoggedIn();
+          return false;
+        }
+
+        setAsLoggedIn();
         return true;
-      } catch (error) { return false; }
+      } catch (error) { 
+        
+        setAsNotLoggedIn();
+        return false; 
+
+      }
     }
 
     if (result.role && result.role === 'admin' && result.name &&
     admin.role === result.role &&
     admin.name === result.name
     ) {
+      setAsLoggedIn();
       return true;
     }
+    setAsNotLoggedIn();
     return false;
 
 
@@ -66,20 +84,29 @@ export const useAuthStore = defineStore('admin_auth', () => {
   async function login(user: any) {
     let url = 'login';
     let data: any = await fetchData.postData(API_ROOT_URL + url, user);
+    setAsLoggedIn();
     return data;
   }
   async function logout() {
+    setAsNotLoggedIn();
     let token = storage.getToken();
     if (!token) {
       return false;
     }
     fetchData.setTokenToHeader(token);
     let url = 'logout';
-
     let data: any = await fetchData.postData(API_ROOT_URL + url);
-
     return data;
 
+  }
+  function setAsLoggedIn(){
+    _isAdminLoggedIn.value=true;
+  }
+  function setAsNotLoggedIn(){
+    _isAdminLoggedIn.value=false;
+  }
+  function isLoggedIn(){
+    return _isAdminLoggedIn.value;
   }
 
 
@@ -88,5 +115,6 @@ export const useAuthStore = defineStore('admin_auth', () => {
   return {
     isAuthenticated, refreshToken,
     login, logout,
+    isLoggedIn,setAsLoggedIn,setAsNotLoggedIn,
   }
 })

@@ -27,6 +27,11 @@ async function removeItem(category_id: number) {
 
 }
 
+function showEditModal(category_id: number){
+  console.log(category_id);
+
+}
+
 </script>
 
 <template>
@@ -35,7 +40,8 @@ async function removeItem(category_id: number) {
     <td class="border-r-2 border-r-black px-2">{{ category.name }}</td>
     <td class="w-[20vw] text-xl mx-auto">
       <div class="flex justify-around">
-        <button class="my-2 text-teal-700 hover:scale-125 transition-all duration-100">
+        <button @click="showEditModal(category.id)"
+        class="my-2 text-teal-700 hover:scale-125 transition-all duration-100">
           <i class="fa-solid fa-pen-to-square"></i>
           <span class="hidden sm:inline-block">編輯</span>
         </button>
