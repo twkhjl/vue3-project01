@@ -13,11 +13,7 @@ app.use(router)
 
 // clear console.log when recommpile
 if (import.meta.hot) {
-  import.meta.hot.on(
-    "vite:beforeUpdate",
-    () => console.clear()
-  );
+    import.meta.hot.on('vite:beforeUpdate', () => console.clear())
 }
-
 
 app.mount('#app')
