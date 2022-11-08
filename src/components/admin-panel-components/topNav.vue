@@ -1,36 +1,27 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import { useSidebarStore } from '../../stores/admin-panel/sidebar.js';
-import { useAdminStore } from '../../stores/admin-panel/admin.js';
 import { useTopNavStore } from "../../stores/admin-panel/topnav.js";
+import { useAuthStore as useAdminAuthStore } from "@/stores/admin-panel/auth/admin_auth";
+import { useStorageStore } from "@/stores/admin-panel/auth/admin_storage";
 
 import router from "@/router";
-import { useRoute } from 'vue-router';
-
-
 
 const sidebarStore = useSidebarStore();
 const topNavStore = useTopNavStore();
-const adminStore = useAdminStore();
+
+const auth = useAdminAuthStore();
+const storage = useStorageStore();
 
 
 const userSubMenu=ref(null);
-const tttSubMenu=ref(null);
-
-
 
 function toggleSidebar() {
   return sidebarStore.toggleSidebar();
 }
 
-let currentMenu = ref();
+const currentMenu = ref();
 
-let isMenuHidden = ref(true);
-
-
-let menus={
-  'user':userSubMenu,
-}
 
 function toggleMenu(menu: string) {
 
@@ -46,29 +37,15 @@ function toggleMenu(menu: string) {
 
 }
 
-// watch(() => currentMenu.value, (newVal) => {
-//   console.log(newVal);
-// });
-
-function onMenuFocus(menu:string){
-  // console.log(menu);
-}
-
 
 async function logout() {
-  let result = await adminStore.logout();
+  
+  await auth.logout();
+  storage.removeAdmin();
+  storage.removeToken();
+
   router.push({ name: 'admin.login' });
 }
-
-const route=useRoute();
-
-
-watch(() => route.name, () => {
-  // console.log(`MyCoolComponent - watch route.name changed to ${route.name}`);
-  // Do something here...
-
-  // Optionally you can set immediate: true config for the watcher to run on init
-}, { immediate: true });
 
 
 

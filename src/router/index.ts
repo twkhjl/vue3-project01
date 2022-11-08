@@ -1,10 +1,13 @@
-import { createRouter, createWebHistory,createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import AboutView from '../views/AboutView.vue'
+import { useAuthStore as useAdminAuthStore } from '@/stores/admin-panel/auth/admin_auth';
+import { useStorageStore } from '@/stores/admin-panel/auth/admin_storage';
+import { useGlobalLoadingState } from '@/stores/admin-panel/global_loading_state';
+import formCreateCategoryVue from '@/components/admin-panel-components/formCreateCategory.vue';
 
 const router = createRouter({
-  history: createWebHashHistory(import.meta.env.BASE_URL),
-  // history: createWebHistory(import.meta.env.BASE_URL),
+  // history: createWebHashHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
@@ -31,16 +34,17 @@ const router = createRouter({
       path: '/admin/',
       name: 'admin-panel',
       component: () => import('../views/admin-panel/AdminPanelView.vue'),
-      children:[
+      children: [
         {
           path: '',
           name: 'admin.main',
-          component: () => import('../views/admin-panel/Main.vue')
+          component: () => import('../views/admin-panel/Main.vue'),
         },
         {
           path: 'ttt',
-          name: 'ttt',
-          component: () => import('../views/admin-panel/Ttt.vue')
+          name: 'admin.ttt',
+          component: () => import('../views/admin-panel/Ttt.vue'),
+          
         },
         {
           path: 'categories',
@@ -52,11 +56,29 @@ const router = createRouter({
           name: 'admin.categories.new',
           component: () => import('../views/admin-panel/CreateNewCategoryView.vue')
         },
-        
+
       ]
     },
 
   ]
+});
+
+router.beforeEach(async(to:any,from:any) => {
+  
+  const auth = useAdminAuthStore();
+  const storage = useStorageStore();
+  
+  const regAdminURL = /^admin\..*$/
+
+  if(regAdminURL.test(to.name) && to.name!=='admin.login'){
+
+    const result = await auth.isAuthenticated();
+    if(!result){
+      return {name:'admin.login'};
+    }
+      return;
+  }
+  
 })
 
 export default router

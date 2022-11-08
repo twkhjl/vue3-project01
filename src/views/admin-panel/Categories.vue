@@ -7,7 +7,7 @@ import CategoriesTable from "../../components/admin-panel-components/categoriesT
 const adminStore = useAdminStore();
 
 onBeforeMount(async()=>{
-  await adminStore.validataAdminState();
+  //await adminStore.validataAdminState();
 
 })
 

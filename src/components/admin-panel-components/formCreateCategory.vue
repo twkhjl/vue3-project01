@@ -1,24 +1,26 @@
 <script setup lang="ts">
 import router from '@/router';
-import { ref, onBeforeMount, computed, watch, onMounted } from 'vue'
-import ajax from '../../helpers/ajax';
+import { ref } from 'vue'
 
-import { useAdminStore } from '../../stores/admin-panel/admin.js';
 import { useCategoryStore } from '../../stores/admin-panel/category.js';
 
-const adminStore = useAdminStore();
 const categoryStore = useCategoryStore();
 
 
-let input_img: any = ref();
-let input_name: any = ref();
-let textarea_description: any = ref();
-let img: any = ref(null);
+const input_img: any = ref();
+const input_name: any = ref();
+const textarea_description: any = ref();
+const img: any = ref(null);
 
-let errors:any = ref(null);
+const errors:any = ref(null);
+
+const serverError:any=ref(false);
+
 
 
 const div_drop_area: any = ref();
+
+const isDragEnter:any=ref(false);
 
 
 
@@ -29,7 +31,6 @@ async function previewImg() {
   const imgPreview:any = document.querySelector('#id_imgPreview');
 
   imgPreview.src = URL.createObjectURL(file) || '';
-  // id_imgPreview.src = URL.createObjectURL(file) || '';
 
   let img_data = await readImgFile(file);
   img.value = img_data;
@@ -40,7 +41,7 @@ async function previewImg() {
 async function dropHandler(e: any) {
 
   e.preventDefault();
-
+  isDragEnter.value=false;
   input_img.value.value = '';
 
   const file = e.dataTransfer.files[0];
@@ -53,7 +54,12 @@ async function dropHandler(e: any) {
 
 
 }
-function dragoverHandler(e: any) {
+function dragEnterHandler(e: any) {
+  e.preventDefault();
+  e.stopPropagation();
+  return;
+}
+function dragOverHandler(e: any){
   e.preventDefault();
   e.stopPropagation();
   return;
@@ -70,24 +76,10 @@ function readImgFile(file:any) {
     reader.onerror = reject;
 
     reader.readAsDataURL(file);
-    // reader.readAsArrayBuffer(file);
 
   })
 }
 
-// function readImg(file: any) {
-//   const reader = new FileReader();
-//   reader.addEventListener("load", () => {
-//     id_imgPreview.src = reader.result;
-//   }, false);
-
-//   if (file) {
-//     reader.readAsDataURL(file);
-
-//     img.value = file;
-//   }
-
-// }
 async function create() {
   errors.value = null;
 
@@ -106,16 +98,11 @@ async function create() {
     errors.value = result.errors;
     return;
   }
-
-  console.log(result);
-
-  if (result.errors && result.errors.img) {
-    // img.value = null;
-    // id_imgPreview.removeAttribute('src');
-  console.log('err');
-
+  if(result.error && result.error=='server'){
+    serverError.value=true;
     return;
   }
+
   router.push({name:'admin.categories'});
 
 }
@@ -129,6 +116,8 @@ async function create() {
   h-auto w-full 
   md:w-[80vw] py-10">
     <div class="mt-4 mb-4 text-center text-4xl">創建分類</div>
+    <div v-if="serverError" class="mt-2 mb-2 text-red-500">*系統異常,請聯絡管理員</div>
+
     <div class="rounded-md border-t-[1px] bg-[#ecf0f3] shadow-lg shadow-[#474444]">
       <form class="flex h-auto w-[70vw] flex-col px-6 md:w-[40vw]">
         <div class="mt-2">
@@ -150,18 +139,15 @@ async function create() {
         <div class="mt-2">
           <div class="mb-2 text-xl font-extrabold">分類圖片</div>
           <div v-if="errors && errors.img" class="mt-2 mb-2 text-red-500">*{{ (errors && errors.img[0]) || '' }}</div>
-          <div class="
-            ">
-
-
-
-            <label ref="div_drop_area" @drop.prevent="dropHandler" @dragenter.prevent
-              @dragover.prevent="dragoverHandler" class='relative flex justify-center items-center h-[30vh]
-            mb-4 border-[8px] border-[#a2a0a0] border-dashed
+          <div class="">
+            <label ref="div_drop_area" 
+              class='relative flex justify-center items-center h-[30vh]
+            mb-4 border-[8px]  border-dashed border-[#656565]
             z-0 cursor-pointer'>
               <input ref="input_img" @change="previewImg()" type="file" class="hidden" name="img" />
-              <span class="absolute mx-auto text-[10vw] text-gray-400 opacity-30">
-                <i class="fa-regular fa-image"></i>
+              <span class="absolute top-0 mx-auto text-[20vw] text-gray-400 opacity-50">
+                <i class="fa-regular fa-image"></i>123
+
               </span>
               <span class="ml-2 text-2xl">點擊選擇圖片或拖曳圖片至此</span>
             </label>
