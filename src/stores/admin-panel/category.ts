@@ -22,13 +22,18 @@ export const useCategoryStore = defineStore('category', () => {
     }
 
     async function show(category_id: number) {
-        const url = `store/${category_id}`
+        const url = `show/${category_id}`
         const result: any = await fetchData.getData(API_ROOT_URL + url)
         return result
     }
 
     async function store(data: any) {
         const url = 'store'
+        const result: any = await fetchData.postData(API_ROOT_URL + url, data)
+        return result
+    }
+    async function update(data: any) {
+        const url = 'update'
         const result: any = await fetchData.postData(API_ROOT_URL + url, data)
         return result
     }
@@ -45,6 +50,7 @@ export const useCategoryStore = defineStore('category', () => {
         all,
         show,
         store,
+        update,
         destroy,
     }
 })

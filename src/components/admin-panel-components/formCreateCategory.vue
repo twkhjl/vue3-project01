@@ -3,12 +3,15 @@ import router from '@/router'
 import { ref } from 'vue'
 
 import { useCategoryStore } from '../../stores/admin-panel/category.js'
+import { useFileHelper } from '@/helpers/fileHelper'
 
 const categoryStore = useCategoryStore()
+const fileHelper = useFileHelper()
 
-const input_img: any = ref()
+const inputImg: any = ref()
 const input_name: any = ref()
 const textarea_description: any = ref()
+const imgPreview: any = ref()
 const img: any = ref(null)
 
 const errors: any = ref(null)
@@ -18,28 +21,23 @@ const serverError: any = ref(false)
 const div_drop_area: any = ref()
 
 async function previewImg() {
-    const file = input_img.value.files[0]
-
-    const imgPreview: any = document.querySelector('#id_imgPreview')
-
-    imgPreview.src = URL.createObjectURL(file) || ''
-
-    let img_data = await readImgFile(file)
-    img.value = img_data
+    const file = inputImg.value.files[0]
+    if (file) {
+        imgPreview.value.src = URL.createObjectURL(file)
+        const img_data = await fileHelper.readFileAsDataURL(file)
+        img.value = img_data
+    }
 }
+async function dropHandler(e: any) {
+    e.preventDefault()
 
-function readImgFile(file: any) {
-    return new Promise((resolve, reject) => {
-        let reader = new FileReader()
-
-        reader.onload = () => {
-            resolve(reader.result)
-        }
-
-        reader.onerror = reject
-
-        reader.readAsDataURL(file)
-    })
+    inputImg.value.value = ''
+    let file = e.dataTransfer.files[0]
+    if (file) {
+        imgPreview.value.src = URL.createObjectURL(file)
+        const img_data = await fileHelper.readFileAsDataURL(file)
+        img.value = img_data
+    }
 }
 
 async function create() {
@@ -52,7 +50,6 @@ async function create() {
     }
 
     let result: any = await categoryStore.store(data)
-
     if (result.errors) {
         window.scrollTo({ top: 0, behavior: 'smooth' })
         errors.value = result.errors
@@ -124,13 +121,16 @@ async function create() {
                         <label
                             ref="div_drop_area"
                             class="relative flex justify-center items-center h-[30vh] mb-4 border-[8px] border-dashed border-[#656565] z-0 cursor-pointer"
+                            @drop.prevent="dropHandler"
+                            @dragenter.prevent
+                            @dragover.prevent
                         >
                             <input
-                                ref="input_img"
-                                @change="previewImg()"
+                                ref="inputImg"
                                 type="file"
                                 class="hidden"
                                 name="img"
+                                @change="previewImg()"
                             />
                             <span
                                 class="absolute flex sm:text-[10vw] text-[20vw] text-gray-400 opacity-50"
@@ -145,20 +145,25 @@ async function create() {
                     <div v-if="img" class="mb-2 text-xl font-extrabold">
                         圖片預覽
                     </div>
-                    <img class="w-full max-h-48" id="id_imgPreview" alt="" />
+                    <img
+                        id="id_imgPreview"
+                        ref="imgPreview"
+                        class="w-full max-h-48"
+                        alt=""
+                    />
                 </div>
 
                 <div class="flex justify-between my-4">
                     <button
-                        @click.prevent="create()"
                         class="h-[7vh] w-[40%] rounded-md border-2 border-gray-300 bg-green-800 text-2xl text-white outline-none hover:bg-green-400 hover:text-black"
+                        @click.prevent="create()"
                     >
                         建立
                     </button>
 
                     <button
-                        @click.prevent="router.go(-1)"
                         class="h-[7vh] w-[40%] rounded-md border-2 border-gray-300 bg-gray-600 text-2xl text-white outline-none hover:bg-slate-400 hover:text-black"
+                        @click.prevent="router.go(-1)"
                     >
                         取消
                     </button>

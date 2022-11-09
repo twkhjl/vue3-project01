@@ -24,7 +24,7 @@ const overlay_disabled_bg_css = ref('opacity-0')
 // const default_overlay_enter_css = ref('opacity-0')
 // const default_overlay_leave_css = ref('opacity-0')
 
-const default_modal_active_css = ref('transition-all-2 duration-200')
+const default_modal_active_css = ref('transition-all-2 duration-100')
 // const default_modal_enter_css = ref('opacity-0 transform translate-y-[-100px]')
 // const default_modal_leave_css = ref('opacity-0 transform translate-y-[-100px]')
 
@@ -48,8 +48,10 @@ function get_overlay_bg_css() {
                 class="z-[100] fixed top-[5vh] left-[30vw] mr-auto w-[40vw] h-auto flex flex-col justify-center"
             >
                 <component
-                    :is="global_modal_store.get_current_modal()" v-bind="global_modal_store.get_props()"
-                ></component>
+                    :is="global_modal_store.get_current_modal()"
+                    v-bind="global_modal_store.get_props()"
+                >
+                </component>
             </div>
         </Transition>
 
@@ -61,9 +63,9 @@ function get_overlay_bg_css() {
         >
             <div
                 v-if="global_modal_store.is_show()"
-                @click="global_modal_store.hide()"
                 :class="get_overlay_bg_css()"
                 class="fixed top-0 left-0 z-[50] h-screen w-screen"
+                @click="global_modal_store.hide()"
             ></div>
         </Transition>
     </Teleport>

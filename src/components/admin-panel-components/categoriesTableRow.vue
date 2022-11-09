@@ -2,7 +2,6 @@
 import { useGlobalModalStore } from '@/stores/admin-panel/global_modal.js'
 import formEditCategoryVue from '@/components/admin-panel-components/formEditCategory.vue'
 
-
 defineProps(['category', 'idx', 'store', 'data'])
 const emits = defineEmits(['onRemoveEvent'])
 
@@ -23,9 +22,8 @@ async function removeItem(category_id: number) {
     return
 }
 
-function showEditModal(category_id: number) {
-
-    const props = {id:category_id}
+function showEditModal(category: any) {
+    const props = { category }
 
     global_modal_store.set_props(props)
 
@@ -41,7 +39,7 @@ function showEditModal(category_id: number) {
         <td class="w-[20vw] text-xl mx-auto">
             <div class="flex justify-around">
                 <button
-                    @click="showEditModal(category.id)"
+                    @click="showEditModal(category)"
                     class="my-2 text-teal-700 hover:scale-125 transition-all duration-100"
                 >
                     <i class="fa-solid fa-pen-to-square"></i>

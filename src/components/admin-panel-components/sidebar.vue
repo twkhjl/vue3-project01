@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { watch, ref, onMounted, onBeforeMount } from 'vue'
+import { watch, onMounted } from 'vue'
 import { useSidebarStore } from '../../stores/admin-panel/sidebar.js'
-import { useAdminStore } from '../../stores/admin-panel/admin.js'
 import { useBreakPointStore } from '../../stores/common/breakpoint.js'
 
 import SidebarItem from './sidebarItem.vue'
@@ -86,8 +85,8 @@ const sidebarItemData = [
 <template>
     <div
         :class="[sidebarStore.isSidebarHidden() ? 'hidden' : '']"
-        @click="sidebarStore.toggleSidebar()"
         class="fixed h-full w-full z-20 bg-black opacity-[0.5] md:hidden"
+        @click="sidebarStore.toggleSidebar()"
     ></div>
 
     <div
@@ -103,8 +102,8 @@ const sidebarItemData = [
         <div class="flex flex-col">
             <SidebarItem
                 v-for="(itemData, idx) in sidebarItemData"
-                :itemData="itemData"
                 :key="idx"
+                :item-data="itemData"
             />
         </div>
     </div>

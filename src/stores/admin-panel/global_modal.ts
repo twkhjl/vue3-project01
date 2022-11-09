@@ -29,13 +29,13 @@ export const useGlobalModalStore = defineStore('global_modal', () => {
         AlertVue,
     }
 
-    const _props =ref()
+    const _props = ref()
 
-    function set_props(props:any){
-      _props.value=props
+    function set_props(props: any) {
+        _props.value = props
     }
-    function get_props(){
-      return _props.value
+    function get_props() {
+        return _props.value
     }
 
     function use_alert() {
