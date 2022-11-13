@@ -8,13 +8,13 @@ import AlertVue from './modals/alert.vue'
 const global_modal_store = useGlobalModalStore()
 
 function hideModal() {
-    global_modal_store.hide()
+  global_modal_store.hide()
 }
 
 const modals = {
-    ConfirmVue,
-    ModalVue,
-    AlertVue,
+  ConfirmVue,
+  ModalVue,
+  AlertVue,
 }
 
 const default_overlay_bg_css = ref('bg-gray-800 opacity-70')
@@ -29,46 +29,46 @@ const default_modal_active_css = ref('transition-all-2 duration-100')
 // const default_modal_leave_css = ref('opacity-0 transform translate-y-[-100px]')
 
 function get_overlay_bg_css() {
-    if (!global_modal_store.is_overlay_enabled())
-        return overlay_disabled_bg_css.value
-    return default_overlay_bg_css.value
+  if (!global_modal_store.is_overlay_enabled())
+    return overlay_disabled_bg_css.value
+  return default_overlay_bg_css.value
 }
 </script>
 
 <template>
-    <Teleport to="body">
-        <Transition
-            :enter-active-class="default_modal_active_css"
-            :leave-active-class="default_modal_active_css"
-            enter-from-class="opacity-0 transform translate-y-[-100px]"
-            leave-to-class="opacity-0 transform translate-y-[-100px]"
+  <Teleport to="body">
+    <Transition
+      :enter-active-class="default_modal_active_css"
+      :leave-active-class="default_modal_active_css"
+      enter-from-class="opacity-0 transform translate-y-[-100px]"
+      leave-to-class="opacity-0 transform translate-y-[-100px]"
+    >
+      <div
+        v-if="global_modal_store.is_show()"
+        class="z-[100] fixed top-[5vh] left-[30vw] mr-auto w-[40vw] h-auto flex flex-col justify-center"
+      >
+        <component
+          :is="global_modal_store.get_current_modal()"
+          v-bind="global_modal_store.get_props()"
         >
-            <div
-                v-if="global_modal_store.is_show()"
-                class="z-[100] fixed top-[5vh] left-[30vw] mr-auto w-[40vw] h-auto flex flex-col justify-center"
-            >
-                <component
-                    :is="global_modal_store.get_current_modal()"
-                    v-bind="global_modal_store.get_props()"
-                >
-                </component>
-            </div>
-        </Transition>
+        </component>
+      </div>
+    </Transition>
 
-        <Transition
-            enter-active-class="transition-all-2 duration-200"
-            leave-active-class="transition-all duration-200"
-            enter-from-class="opacity-0"
-            leave-to-class="opacity-0"
-        >
-            <div
-                v-if="global_modal_store.is_show()"
-                :class="get_overlay_bg_css()"
-                class="fixed top-0 left-0 z-[50] h-screen w-screen"
-                @click="global_modal_store.hide()"
-            ></div>
-        </Transition>
-    </Teleport>
+    <Transition
+      enter-active-class="transition-all-2 duration-200"
+      leave-active-class="transition-all duration-200"
+      enter-from-class="opacity-0"
+      leave-to-class="opacity-0"
+    >
+      <div
+        v-if="global_modal_store.is_show()"
+        :class="get_overlay_bg_css()"
+        class="fixed top-0 left-0 z-[50] h-screen w-screen"
+        @click="global_modal_store.hide()"
+      ></div>
+    </Transition>
+  </Teleport>
 </template>
 
 <style scoped>
