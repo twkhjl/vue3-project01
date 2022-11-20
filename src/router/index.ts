@@ -53,6 +53,11 @@ const router = createRouter({
           component: () =>
             import('../views/admin-panel/CreateNewCategoryView.vue'),
         },
+        {
+          path: 'products',
+          name: 'admin.products',
+          component: () => import('../views/admin-panel/Products.vue'),
+        },
       ],
     },
   ],
@@ -75,7 +80,6 @@ router.beforeEach(async (to: any) => {
 
   if (regAdminURL.test(to.name) && to.name !== 'admin.login') {
     const result = await auth.isAuthenticated()
-
     if (!result) {
       return { name: 'admin.login' }
     }

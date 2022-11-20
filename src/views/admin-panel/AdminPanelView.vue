@@ -12,26 +12,26 @@ const topNavStore = useTopNavStore()
 const global_loader_store = useGlobalLoaderStore()
 
 function hideTopNavMenu() {
-    topNavStore.hideSubMenu()
+  topNavStore.hideSubMenu()
 }
 </script>
 
 <template>
-    <GlobalModal></GlobalModal>
-    <GlobalLoader></GlobalLoader>
+  <GlobalModal></GlobalModal>
+  <GlobalLoader></GlobalLoader>
+  <div
+    :class="global_loader_store.is_loading() ? 'hidden' : 'flex'"
+    class="flex-col"
+  >
+    <!-- topnav -->
+    <TopNav></TopNav>
+    <!-- sidebar -->
+    <Sidebar></Sidebar>
     <div
-        :class="global_loader_store.is_loading() ? 'hidden' : 'flex'"
-        class="flex-col"
+      class="main min-h-[90vh] w-full bg-gray-300 md:ml-[20vw] md:w-[80vw]"
+      @click="hideTopNavMenu()"
     >
-        <!-- topnav -->
-        <TopNav></TopNav>
-        <!-- sidebar -->
-        <Sidebar></Sidebar>
-        <div
-            class="main min-h-[90vh] w-full bg-gray-300 md:ml-[20vw] md:w-[80vw]"
-            @click="hideTopNavMenu()"
-        >
-            <RouterView></RouterView>
-        </div>
+      <RouterView></RouterView>
     </div>
+  </div>
 </template>
