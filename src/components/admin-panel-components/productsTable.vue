@@ -15,8 +15,9 @@ onMounted(async () => {
 
   global_loading_state.start_loading()
 
-  let result: any = await productStore.paginate()
-  console.log(result)
+  let result: any = await productStore.paginate(3, 5)
+  console.log(result[0])
+  console.log(result[0].last_page)
   if (!result.error) {
     data.value = result[0].data
   }
@@ -61,6 +62,35 @@ onMounted(async () => {
         </template>
       </tbody>
     </table>
+
+    <!-- pagination -->
+    <div class="flex border-4 my-4 border-black justify-center">
+      <div
+        class="w-[40px] h-[40px] text-white text-lg bg-[#525252] m-2 rounded-full leading-[40px] text-center"
+      >
+        <i class="fa-solid fa-chevron-left"></i>
+      </div>
+      <div
+        class="w-[40px] h-[40px] text-white text-lg bg-[#525252] m-2 rounded-full leading-[40px] text-center"
+      >
+        1
+      </div>
+      <div
+        class="w-[40px] h-[40px] text-white text-lg bg-[#525252] m-2 rounded-full leading-[40px] text-center"
+      >
+        2
+      </div>
+      <div
+        class="w-[40px] h-[40px] text-white text-lg bg-[#525252] m-2 rounded-full leading-[40px] text-center"
+      >
+        3
+      </div>
+      <div
+        class="w-[40px] h-[40px] text-white text-lg bg-[#525252] m-2 rounded-full leading-[40px] text-center"
+      >
+        <i class="fa-solid fa-chevron-right"></i>
+      </div>
+    </div>
   </div>
 </template>
 

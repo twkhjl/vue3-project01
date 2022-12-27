@@ -14,8 +14,8 @@ export const useProductStore = defineStore('product', () => {
     fetchData.setTokenToHeader(storage.getToken())
   })
 
-  async function paginate() {
-    const url = 'paginate'
+  async function paginate(page: Number = 1, perPage: Number = 20) {
+    const url = `paginate?page=${page}&perPage=${perPage}`
     const result: any = await fetchData.getData(API_ROOT_URL + url)
     return result
   }
